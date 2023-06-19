@@ -43,7 +43,7 @@
                                         <div class="col-md-5">
                                         </div>
                                         <div class="col-md-1">
-                                            <a href="{{ route('admin.blood_group.add') }}" class="btn btn-block btn-primary">Add Blood Group</a>
+                                            <a href="{{ route('admin.blood_group.add') }}" class="btn btn-block btn-primary">Add</a>
                                         </div>
                                     </div>
                                     </div>

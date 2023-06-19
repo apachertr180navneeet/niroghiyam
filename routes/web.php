@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\{
     UserController,
     AllergyController,
     BloodGroupController,
-    CategoryController
+    CategoryController,
+    MembershipController
 };
 
 /*
@@ -88,6 +89,18 @@ Route::name('admin.')->prefix('admin')->controller(CategoryController::class)->m
     Route::post('category_update', 'update')->name('category.update');
     Route::delete('category_delete/{id}', 'delete')->name('category.delete');
     Route::get('category_status/{id}', 'status')->name('category.status');
+});
+
+
+
+Route::name('admin.')->prefix('admin')->controller(MembershipController::class)->middleware('web')->group(function () {
+    Route::get('membership_list', 'index')->name('membership.list');
+    Route::get('membership_add', 'create')->name('membership.add');
+    Route::post('membership_store', 'store')->name('membership.store');
+    Route::get('membership_edit/{id}', 'edit')->name('membership.edit');
+    Route::post('membership_update', 'update')->name('membership.update');
+    Route::delete('membership_delete/{id}', 'delete')->name('membership.delete');
+    Route::get('membership_status/{id}', 'status')->name('membership.status');
 });
 
 

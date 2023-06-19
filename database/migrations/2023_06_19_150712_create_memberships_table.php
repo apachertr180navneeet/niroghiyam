@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 255);
+            $table->text('description');
+            $table->float('amount', 8, 2);
+            $table->enum('status', ['0','1'])->default(0)->comment('1 => Active, 0=>InActive');
             $table->timestamps();
         });
     }

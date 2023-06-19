@@ -1,5 +1,5 @@
 @extends('admin.layout.main_app')
-@section('title', 'Category List')
+@section('title', 'Membership List')
 @section('content')
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -8,13 +8,13 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0">Category List</h1>
+                                <h1 class="m-0">Membership List</h1>
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Category List</li>
+                                    <li class="breadcrumb-item active">Membership List</li>
                                 </ol>
                             </div>
                             <!-- /.col -->
@@ -38,12 +38,12 @@
                                     <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h3 class="card-title">Category List</h3>
+                                            <h3 class="card-title">Membership List</h3>
                                         </div>
                                         <div class="col-md-5">
                                         </div>
                                         <div class="col-md-1">
-                                            <a href="{{ route('admin.category.add') }}" class="btn btn-block btn-primary">Add</a>
+                                            <a href="{{ route('admin.membership.add') }}" class="btn btn-block btn-primary">Add</a>
                                         </div>
                                     </div>
                                     </div>
@@ -59,20 +59,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($category_list as $category)
+                                                @foreach ($memebership_list as $memebership)
                                                 <tr>
                                                     <td>{{ ++$i }}.</td>
-                                                    <td>{{ $category->name }}</td>
+                                                    <td>{{ $memebership->name }}</td>
                                                     <td>
-                                                        @if($category->status =='0')
-                                                            <a href="javascript:void(0)" data-id="{{ $category->id }}" data-status="1" data-url="{{ route('admin.category.status',$category->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @if($memebership->status =='0')
+                                                            <a href="javascript:void(0)" data-id="{{ $memebership->id }}" data-status="1" data-url="{{ route('admin.membership.status',$memebership->id) }}" class="btn btn-danger status">InActive</a>
                                                         @else
-                                                            <a href="javascript:void(0)" data-id="{{ $category->id }}" data-status="0" data-url="{{ route('admin.category.status',$category->id) }}" class="btn btn-success status">Active</a>
+                                                            <a href="javascript:void(0)" data-id="{{ $memebership->id }}" data-status="0" data-url="{{ route('admin.membership.status',$memebership->id) }}" class="btn btn-success status">Active</a>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="javascript:void(0)" id="delete-user" data-id="{{ $category->id }}" data-url="{{ route('admin.category.delete',$category->id) }}"  class="btn btn-danger delete">Delete</a>
-                                                        <a href="{{ route('admin.category.edit',$category->id) }}" class="btn btn-warning">Edit</a>
+                                                        <a href="javascript:void(0)" id="delete-user" data-id="{{ $memebership->id }}" data-url="{{ route('admin.membership.delete',$memebership->id) }}"  class="btn btn-danger delete">Delete</a>
+                                                        <a href="{{ route('admin.membership.edit',$memebership->id) }}" class="btn btn-warning">Edit</a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -88,7 +88,7 @@
                                         </table>
 
                                         <div class="d-flex justify-content-center">
-                                            {!! $category_list->links() !!}
+                                            {!! $memebership_list->links() !!}
                                         </div>
                                     </div>
                                     <!-- /.card-body -->

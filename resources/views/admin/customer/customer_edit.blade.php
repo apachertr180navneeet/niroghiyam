@@ -126,7 +126,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Vecination</label>
+                                    <label>Vaccination</label>
                                     <select name="vecination" class="form-control">
                                         <option value="0" {{$user->vecination == '0'  ? 'selected' : ''}}>no</option>
                                         <option value="1" {{$user->vecination == '1'  ? 'selected' : ''}}>yes</option>
