@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\{
     Session
 };
 
+
+
 class BloodGroupController extends Controller
 {
     public function index(){

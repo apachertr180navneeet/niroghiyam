@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\{
     Session
 };
 
+
+
 class AllergyController extends Controller
 {
     public function index(){
