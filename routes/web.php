@@ -10,7 +10,8 @@ use App\Http\Controllers\Admin\{
     AllergyController,
     BloodGroupController,
     CategoryController,
-    MembershipController
+    MembershipController,
+    CMSController
 };
 
 /*
@@ -101,6 +102,18 @@ Route::name('admin.')->prefix('admin')->controller(MembershipController::class)-
     Route::post('membership_update', 'update')->name('membership.update');
     Route::delete('membership_delete/{id}', 'delete')->name('membership.delete');
     Route::get('membership_status/{id}', 'status')->name('membership.status');
+});
+
+
+
+Route::name('admin.')->prefix('admin')->controller(CMSController::class)->middleware('web')->group(function () {
+    Route::get('cms_list', 'index')->name('cms.list');
+    Route::get('cms_add', 'create')->name('cms.add');
+    Route::post('cms_store', 'store')->name('cms.store');
+    Route::get('cms_edit/{id}', 'edit')->name('cms.edit');
+    Route::post('cms_update', 'update')->name('cms.update');
+    Route::delete('cms_delete/{id}', 'delete')->name('cms.delete');
+    Route::get('cms_status/{id}', 'status')->name('cms.status');
 });
 
 
