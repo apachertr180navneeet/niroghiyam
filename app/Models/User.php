@@ -26,6 +26,7 @@ class User extends Authenticatable
         'status',
         'type',
         'profile_image',
+        'otp',
     ];
 
     /**

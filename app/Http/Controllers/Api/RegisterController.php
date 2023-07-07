@@ -12,6 +12,8 @@ use App\Models\{
 };
 
 
+
+
 use Illuminate\Support\Facades\{
     Auth,
     Hash,
@@ -84,7 +86,10 @@ class RegisterController extends ApiBaseController
             $user = Auth::user(); 
             $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
-            $success['otp'] = random_int(100000, 999999);
+            $otp = $success['otp'] = random_int(100000, 999999);
+
+            User::where('email', $request->email)
+                ->update(['otp' => $otp]);
    
             return $this->sendResponse($success, 'User login successfully.');
         }elseif(Auth::attempt(['phone_number' => $request->mobile, 'password' => $request->password])){
