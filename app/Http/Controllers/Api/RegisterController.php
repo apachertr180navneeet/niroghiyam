@@ -37,6 +37,7 @@ class RegisterController extends ApiBaseController
             'city' => 'required',
             'state' => 'required',
             'pincode' => 'required',
+            'password' => 'required'
         ]);
 
 
@@ -47,7 +48,7 @@ class RegisterController extends ApiBaseController
             'phone_number' => $request->phone_number,
             'type'=> '1',
             'username' => strtolower($request->email),
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make($request->password),
        ];
 
        $user = User::create($datauser);
@@ -66,25 +67,37 @@ class RegisterController extends ApiBaseController
             'vecination' => '1',
        ];
 
+       $token =  $user->createToken('MyApp')->plainTextToken;
+
        $userdetail = User_detail::create($datauserdetail);
 
-        return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail], 201);
+        return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token], 201);
     }
 
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $request->validate([
+            'password' => 'required'
+        ]);
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+            $user = Auth::user(); 
+            $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
+            $success['name'] =  $user->name;
+            $success['otp'] = random_int(100000, 999999);
+   
+            return $this->sendResponse($success, 'User login successfully.');
+        }elseif(Auth::attempt(['phone_number' => $request->mobile, 'password' => $request->password])){
+            $user = Auth::user(); 
+            $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
+            $success['name'] =  $user->name;
+            
+            $success['otp'] = random_int(100000, 999999);
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
-
-            return response()->json([
-                'token' => $token,
-                'user' => $user
-            ]);
-        }
+            return $this->sendResponse($success, 'User login successfully.');
+        }else{ 
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        } 
 
         return response()->json(['error' => 'Invalid credentials'], 401);
     }
