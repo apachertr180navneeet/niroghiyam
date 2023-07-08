@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\API\ApiBaseController as ApiBaseController;
+use App\Http\Controllers\Api\ApiBaseController as ApiBaseController;
 
 use App\Models\{
     User,
@@ -89,7 +89,7 @@ class RegisterController extends ApiBaseController
             $otp = $success['otp'] = random_int(100000, 999999);
 
             User::where('email', $request->email)
-                ->update(['otp' => $otp]);
+                ->update(['otp' => $otp,'remember_token' => $success['token']]);
    
             return $this->sendResponse($success, 'User login successfully.');
         }elseif(Auth::attempt(['phone_number' => $request->mobile, 'password' => $request->password])){
@@ -99,12 +99,92 @@ class RegisterController extends ApiBaseController
             
             $success['otp'] = random_int(100000, 999999);
 
+
+            User::where('phone_number', $request->mobile)
+            ->update(['otp' => $success['otp'],'remember_token' => $success['token']]);
+
             return $this->sendResponse($success, 'User login successfully.');
         }else{ 
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
         } 
 
         return response()->json(['error' => 'Invalid credentials'], 401);
+    }
+
+
+
+    public function checkotp(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'otp' => 'required'
+        ]);
+
+        
+        if($request->email != ""){
+
+            $user = User::where('email', $request->email)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
+
+
+            if(!empty($user)){
+                $success['name'] =  $user->name;
+                return $this->sendResponse($success, 'Otp Matched');
+            }else{
+                $success['name'] =  "";
+                return $this->sendResponse($success, 'Otp Not Matched');
+            }
+
+        }elseif($request->mobile != ""){
+            $user = User::where('phone_number', $request->mobile)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
+
+            if(!empty($user)){
+                $success['name'] =  $user->name;
+                return $this->sendResponse($success, 'Otp Matched');
+            }else{
+                $success['name'] =  "";
+                return $this->sendResponse($success, 'Otp Matched');
+            }
+
+        }else{
+
+        }
+         
+
+        return response()->json(['error' => 'Invalid credentials'], 401);
+    }
+
+
+
+    public function resendotp(Request $request)
+    {
+        if($request->email != ""){
+
+
+            $user = User::where('email', $request->email)->first();
+
+
+            $otp = $success['otp'] = random_int(100000, 999999);
+
+            User::where('email', $request->email)
+                ->update(['otp' => $otp]);
+   
+            return $this->sendResponse($success, 'Resend Otp.');
+
+        }elseif($request->mobile != ""){
+            $user = User::where('phone_number', $request->mobile)->first();
+
+            $success['otp'] = random_int(100000, 999999);
+
+
+            User::where('phone_number', $request->mobile)
+            ->update(['otp' => $success['otp']]);
+
+            return $this->sendResponse($success, 'Resend Otp.');
+
+        }else{
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
     }
 
 }

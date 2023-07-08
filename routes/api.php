@@ -29,4 +29,6 @@ use App\Http\Controllers\Api\{
 Route::controller(RegisterController::class)->group(function(){
     Route::post('register', 'register');
     Route::post('login', 'login');
+    Route::post('checkotp', 'checkotp');
+    Route::post('resendotp', 'resendotp');
 });
