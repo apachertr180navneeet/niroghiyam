@@ -8,7 +8,8 @@ use App\Http\Controllers\Api\ApiBaseController as ApiBaseController;
 
 use App\Models\{
     User,
-    User_detail
+    User_detail,
+    User_kyc
 };
 
 
@@ -86,6 +87,7 @@ class RegisterController extends ApiBaseController
             $user = Auth::user(); 
             $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
+            $success['user_id'] =  $user->id;
             $otp = $success['otp'] = random_int(100000, 999999);
 
             User::where('email', $request->email)
@@ -96,6 +98,7 @@ class RegisterController extends ApiBaseController
             $user = Auth::user(); 
             $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
+            $success['user_id'] =  $user->id;
             
             $success['otp'] = random_int(100000, 999999);
 
@@ -128,6 +131,7 @@ class RegisterController extends ApiBaseController
 
             if(!empty($user)){
                 $success['name'] =  $user->name;
+                $success['user_id'] =  $user->id;
                 return $this->sendResponse($success, 'Otp Matched');
             }else{
                 $success['name'] =  "";
@@ -139,6 +143,7 @@ class RegisterController extends ApiBaseController
 
             if(!empty($user)){
                 $success['name'] =  $user->name;
+                $success['user_id'] =  $user->id;
                 return $this->sendResponse($success, 'Otp Matched');
             }else{
                 $success['name'] =  "";
@@ -164,6 +169,8 @@ class RegisterController extends ApiBaseController
 
 
             $otp = $success['otp'] = random_int(100000, 999999);
+            $success['user_id'] =  $user->id;
+            $success['user_name'] =  $user->name;
 
             User::where('email', $request->email)
                 ->update(['otp' => $otp]);
@@ -174,6 +181,8 @@ class RegisterController extends ApiBaseController
             $user = User::where('phone_number', $request->mobile)->first();
 
             $success['otp'] = random_int(100000, 999999);
+            $success['user_id'] =  $user->id;
+            $success['user_name'] =  $user->name;
 
 
             User::where('phone_number', $request->mobile)
@@ -185,6 +194,58 @@ class RegisterController extends ApiBaseController
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
+    }
+
+
+
+    public function userkyc(Request $request){
+        $request->validate([
+            'token' => 'required',
+            'user_id' => 'required',
+            'kyc_detail' => 'required',
+        ]);
+        $usertoken = User::where('remember_token', $request->token)->first();
+
+        if(!empty($usertoken)){
+            if($usertoken->id == $request->user_id){
+                
+                
+                $file = $request->file('kyc_image');
+                $filename = time().'.'.$file->getClientOriginalExtension();
+                
+                // File upload location
+                $location = 'uploads';
+
+                // Upload file
+                $file->move($location,$filename);
+
+
+
+                // echo $fileName = time().'.'.$request->kyc_image->extension(); die;
+                // echo $path = $request->file->store(public_path('uploads/'), $fileName);
+                // die;
+                $datauser = [
+                    'user_id' => $request->user_id,
+                    'kyc_image' => $filename,
+                    'kyc_detail' => $request->kyc_detail,
+               ];
+        
+               $user = User_kyc::create($datauser);
+
+               $success['user_id'] = $usertoken->id;
+               $success['user_name'] = $usertoken->name;
+
+               return $this->sendResponse($success, 'User kyc Updated');
+
+            }else{
+                $success['user'] = "User Not Found"; 
+                return $this->sendResponse($success, 'User Not Found');
+            }
+            
+        }else{
+            $success['user'] = "Pls Add correct token"; 
+            return $this->sendResponse($success, 'Token Dosn,t mactched');
+        }
     }
 
 }

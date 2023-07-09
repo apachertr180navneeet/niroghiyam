@@ -31,4 +31,5 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('login', 'login');
     Route::post('checkotp', 'checkotp');
     Route::post('resendotp', 'resendotp');
+    Route::post('userkyc', 'userkyc');
 });
