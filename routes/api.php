@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\Api\{
-    RegisterController
+    RegisterController,
+    UserController
 };
 
 /*
@@ -32,4 +33,12 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('checkotp', 'checkotp');
     Route::post('resendotp', 'resendotp');
     Route::post('userkyc', 'userkyc');
+});
+
+
+
+
+Route::controller(UserController::class)->group(function(){
+    Route::post('get_user', 'getuser');
+    Route::post('profile_update', 'profileupdate');
 });
