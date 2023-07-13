@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\{
     RegisterController,
-    UserController
+    UserController,
+    CommonController
 };
 
 /*
@@ -41,4 +42,12 @@ Route::controller(RegisterController::class)->group(function(){
 Route::controller(UserController::class)->group(function(){
     Route::post('get_user', 'getuser');
     Route::post('profile_update', 'profileupdate');
+});
+
+
+
+Route::controller(CommonController::class)->group(function(){
+    Route::post('get_membership', 'getmembership');
+    Route::post('get_bloodgroup', 'getbloodgroup');
+    Route::post('get_allergy', 'getallergy');
 });
