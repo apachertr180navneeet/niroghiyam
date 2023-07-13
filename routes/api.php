@@ -50,4 +50,5 @@ Route::controller(CommonController::class)->group(function(){
     Route::post('get_membership', 'getmembership');
     Route::post('get_bloodgroup', 'getbloodgroup');
     Route::post('get_allergy', 'getallergy');
+    Route::post('get_category', 'getcategory');
 });
