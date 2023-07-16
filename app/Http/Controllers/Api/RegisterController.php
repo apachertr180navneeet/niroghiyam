@@ -85,18 +85,38 @@ class RegisterController extends ApiBaseController
         if($username == ""){
             return response()->json(['error' => 'Username Required !'], 422);
         }else{
-            $user =  User::where('email', $request->username)->first();
-            if(!empty($user)){
+            $useremail =  User::where('email', $request->username)->first();
+            if($useremail){
 
-                Auth::login($user);
+                $length = 32; // Length of the token in bytes
+
+                $randomBytes = random_bytes($length);
+                $token = $success['token'] = base64_encode($randomBytes);
                 $otp = $success['otp'] = random_int(100000, 999999);
 
-                User::where('email', $request->email)
+                $user = User::where('email', $request->email)
                 ->update(['otp' => $otp,'remember_token' => $token]);
    
                  return $this->sendResponse($success, 'User login successfully.');
             }else{
-                return response()->json(['error' => 'Invalid credentials'], 401);   
+
+                $usermobile =  User::where('phone_number', $request->username)->first();
+
+                if($usermobile){
+                    $length = 32; // Length of the token in bytes
+
+                $randomBytes = random_bytes($length);
+                $token = $success['token'] = base64_encode($randomBytes);
+                $otp = $success['otp'] = random_int(100000, 999999);
+
+                $user =User::where('phone_number', $request->user)
+                ->update(['otp' => $success['otp'],'remember_token' => $token]);
+   
+                 return $this->sendResponse($success, 'User login successfully.');
+                }else{
+
+                    return response()->json(['error' => 'Invalid credentials'], 401);   
+                }
             }
         }
     }
