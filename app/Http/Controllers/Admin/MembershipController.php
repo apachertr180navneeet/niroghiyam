@@ -51,7 +51,7 @@ class MembershipController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
             'description' => 'required',
         ]);
 
@@ -87,7 +87,7 @@ class MembershipController extends Controller
     public function update(Request $request){
         $validatedData = $request->validate([
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
             'description' => 'required',
         ]);
 

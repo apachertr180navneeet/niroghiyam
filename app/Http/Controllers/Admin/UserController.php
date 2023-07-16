@@ -65,7 +65,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'phone_number' => 'required',
+            'phone_number' => 'required|numeric|min:0|max:10',
             'address' => 'required',
             'city' => 'required',
             'state' => 'required'
@@ -146,7 +146,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'phone_number' => 'required',
+            'phone_number' => 'required|numeric|min:0|max:10',
             'address' => 'required',
             'city' => 'required',
             'state' => 'required'
