@@ -38,6 +38,7 @@ class RegisterController extends ApiBaseController
             'dob' => 'required',
             'address' => 'required',
             'city' => 'required',
+            'country' => 'required',
             'state' => 'required',
             'pincode' => 'required',
             'password' => 'required'
@@ -61,6 +62,7 @@ class RegisterController extends ApiBaseController
            'user_id' => $id    ,
            'address' => $request->address,
            'city' => $request->city,
+           'country' => $request->country,
            'state' => $request->state,
            'pincode' => $request->pincode,
            'date_of_birth' => $request->dob,

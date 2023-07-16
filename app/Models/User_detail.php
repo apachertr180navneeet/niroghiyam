@@ -25,6 +25,7 @@ class user_detail extends Authenticatable
         'address',
         'pincode',
         'city',
+        'country',
         'state',
         'memebership_start_date',
         'memebership_end_date',
