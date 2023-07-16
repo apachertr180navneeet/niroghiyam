@@ -22,7 +22,8 @@ class User_kyc extends Authenticatable
 
     protected $fillable = [
         'user_id',
-        'kyc_image',
+        'kyc_front_image',
+        'kyc_back_image',
         'kyc_detail',
     ];
 }

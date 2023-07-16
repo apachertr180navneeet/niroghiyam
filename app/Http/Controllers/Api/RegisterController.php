@@ -80,35 +80,25 @@ class RegisterController extends ApiBaseController
 
     public function login(Request $request)
     {
-        if(Auth::attempt(['email' => $request->user])){ 
-            $user = Auth::user(); 
-            $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
-            $success['name'] =  $user->name;
-            $success['user_id'] =  $user->id;
-            $otp = $success['otp'] = random_int(100000, 999999);
+        $username = $request->username;
 
-            User::where('email', $request->email)
-                ->update(['otp' => $otp,'remember_token' => $success['token']]);
+        if($username == ""){
+            return response()->json(['error' => 'Username Required !'], 422);
+        }else{
+            $user =  User::where('email', $request->username)->first();
+            if(!empty($user)){
+
+                Auth::login($user);
+                $otp = $success['otp'] = random_int(100000, 999999);
+
+                User::where('email', $request->email)
+                ->update(['otp' => $otp,'remember_token' => $token]);
    
-            return $this->sendResponse($success, 'User login successfully.');
-        }elseif(Auth::attempt(['phone_number' => $request->user])){
-            $user = Auth::user(); 
-            $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
-            $success['name'] =  $user->name;
-            $success['user_id'] =  $user->id;
-            
-            $success['otp'] = random_int(100000, 999999);
-
-
-            User::where('phone_number', $request->user)
-            ->update(['otp' => $success['otp'],'remember_token' => $success['token']]);
-
-            return $this->sendResponse($success, 'User login successfully.');
-        }else{ 
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
-        } 
-
-        return response()->json(['error' => 'Invalid credentials'], 401);
+                 return $this->sendResponse($success, 'User login successfully.');
+            }else{
+                return response()->json(['error' => 'Invalid credentials'], 401);   
+            }
+        }
     }
 
 
@@ -207,24 +197,32 @@ class RegisterController extends ApiBaseController
             if($usertoken->id == $request->user_id){
                 
                 
-                $file = $request->file('kyc_image');
-                $filename = time().'.'.$file->getClientOriginalExtension();
+                $front_image = $request->file('front_image');
+                $front_imagename = time().'.'.$front_image->getClientOriginalExtension();
                 
                 // File upload location
                 $location = 'uploads';
 
                 // Upload file
-                $file->move($location,$filename);
+                $front_image->move($location,$front_imagename);
 
 
+                $back_image = $request->file('back_image');
 
-                // echo $fileName = time().'.'.$request->kyc_image->extension(); die;
-                // echo $path = $request->file->store(public_path('uploads/'), $fileName);
-                // die;
+                $back_imagename = time().'.'.$back_image->getClientOriginalExtension();
+                
+                // File upload location
+                $location = 'uploads';
+
+                // Upload file
+                $back_image->move($location,$back_imagename);
+
+
                 $datauser = [
                     'user_id' => $request->user_id,
-                    'kyc_image' => $filename,
-                    'kyc_detail' => $request->kyc_detail,
+                    'kyc_front_image' => $front_imagename,
+                    'kyc_back_image' => $back_imagename,
+                    'back_image' => $request->kyc_detail,
                ];
         
                $user = User_kyc::create($datauser);
