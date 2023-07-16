@@ -80,10 +80,7 @@ class RegisterController extends ApiBaseController
 
     public function login(Request $request)
     {
-        $request->validate([
-            'password' => 'required'
-        ]);
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+        if(Auth::attempt(['email' => $request->user])){ 
             $user = Auth::user(); 
             $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
@@ -94,7 +91,7 @@ class RegisterController extends ApiBaseController
                 ->update(['otp' => $otp,'remember_token' => $success['token']]);
    
             return $this->sendResponse($success, 'User login successfully.');
-        }elseif(Auth::attempt(['phone_number' => $request->mobile, 'password' => $request->password])){
+        }elseif(Auth::attempt(['phone_number' => $request->user])){
             $user = Auth::user(); 
             $success['token'] =   $user->createToken('MyApp')->plainTextToken; 
             $success['name'] =  $user->name;
@@ -103,7 +100,7 @@ class RegisterController extends ApiBaseController
             $success['otp'] = random_int(100000, 999999);
 
 
-            User::where('phone_number', $request->mobile)
+            User::where('phone_number', $request->user)
             ->update(['otp' => $success['otp'],'remember_token' => $success['token']]);
 
             return $this->sendResponse($success, 'User login successfully.');
