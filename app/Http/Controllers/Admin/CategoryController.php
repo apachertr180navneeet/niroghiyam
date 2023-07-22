@@ -54,12 +54,12 @@ class CategoryController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
+            'caticon' => 'required',
         ]);
 
-        
 
         $datauser = [
-             'name' => $request->name,
+             'name' => $request->name
         ];
 
         $id = Category::insertGetId($datauser);

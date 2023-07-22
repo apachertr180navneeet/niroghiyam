@@ -76,7 +76,7 @@ class RegisterController extends ApiBaseController
 
        $userdetail = User_detail::create($datauserdetail);
 
-        return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token], 201);
+        return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token], 200);
     }
 
 
@@ -95,8 +95,10 @@ class RegisterController extends ApiBaseController
                 $randomBytes = random_bytes($length);
                 $token = $success['token'] = base64_encode($randomBytes);
                 $otp = $success['otp'] = random_int(100000, 999999);
+                $success['id'] = $useremail->id;
+                $success['userkyc'] = $useremail->userkyc;
 
-                $user = User::where('email', $request->email)
+                $user = User::where('email', $useremail->email)
                 ->update(['otp' => $otp,'remember_token' => $token]);
    
                  return $this->sendResponse($success, 'User login successfully.');
@@ -110,9 +112,11 @@ class RegisterController extends ApiBaseController
                 $randomBytes = random_bytes($length);
                 $token = $success['token'] = base64_encode($randomBytes);
                 $otp = $success['otp'] = random_int(100000, 999999);
+                $success['id'] = $usermobile->id;
+                $success['userkyc'] = $usermobile->userkyc;
 
-                $user =User::where('phone_number', $request->user)
-                ->update(['otp' => $success['otp'],'remember_token' => $token]);
+                $user =User::where('phone_number', $usermobile->user)
+                ->update(['otp' => $success['otp'],'remember_token' => $phone_number]);
    
                  return $this->sendResponse($success, 'User login successfully.');
                 }else{
@@ -128,14 +132,13 @@ class RegisterController extends ApiBaseController
     public function checkotp(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'userid' => 'required',
             'otp' => 'required'
         ]);
 
         
-        if($request->email != ""){
 
-            $user = User::where('email', $request->email)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
+            $user = User::where('id', $request->userid)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
 
 
             if(!empty($user)){
@@ -146,22 +149,6 @@ class RegisterController extends ApiBaseController
                 $success['name'] =  "";
                 return $this->sendResponse($success, 'Otp Not Matched');
             }
-
-        }elseif($request->mobile != ""){
-            $user = User::where('phone_number', $request->mobile)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
-
-            if(!empty($user)){
-                $success['name'] =  $user->name;
-                $success['user_id'] =  $user->id;
-                return $this->sendResponse($success, 'Otp Matched');
-            }else{
-                $success['name'] =  "";
-                return $this->sendResponse($success, 'Otp Matched');
-            }
-
-        }else{
-
-        }
          
 
         return response()->json(['error' => 'Invalid credentials'], 401);
@@ -251,6 +238,9 @@ class RegisterController extends ApiBaseController
 
                $success['user_id'] = $usertoken->id;
                $success['user_name'] = $usertoken->name;
+
+               $user =User::where('id', $request->user_id)
+                ->update(['userkyc' => '1']);
 
                return $this->sendResponse($success, 'User kyc Updated');
 

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'type',
         'profile_image',
         'otp',
+        'userkyc',
     ];
 
     /**
