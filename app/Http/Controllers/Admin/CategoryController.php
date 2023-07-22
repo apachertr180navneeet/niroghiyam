@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\{
 
 
 
+use URL;
+
+
+
 
 class CategoryController extends Controller
 {
@@ -54,13 +58,30 @@ class CategoryController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
-            'caticon' => 'required',
         ]);
+
+        $baseUrl = url('/');
+
+
+        $file = $request->file('caticon');
+        $filename = time().'.'.$file->getClientOriginalExtension();
+        
+        
+        
+        // File upload location
+        $location = 'uploads';
+        
+        $imageupload = $baseUrl.'/'.$location.'/'.$filename;
+        
+        // Upload file
+        $file->move($location,$filename);
 
 
         $datauser = [
-             'name' => $request->name
+             'name' => $request->name,
+             'image' => $imageupload
         ];
+        
 
         $id = Category::insertGetId($datauser);
 

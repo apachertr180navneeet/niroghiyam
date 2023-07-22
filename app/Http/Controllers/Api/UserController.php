@@ -38,6 +38,8 @@ class UserController extends ApiBaseController
 
             $allergy = explode(",",$user_detail['allergy']);
 
+            $List = "";
+
             foreach ($allergy as $value) {
                 $allergy_list = Allergy::select('id','name')->where('id', $value)->get();
                 foreach ($allergy_list as $id => $title) {
@@ -121,11 +123,13 @@ class UserController extends ApiBaseController
         if($request->file('profile_image') != ""){
             $file = $request->file('profile_image');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $imageupload = $baseUrl.$filename;
+            
 
             
             // File upload location
             $location = 'uploads';
+
+            $imageupload = $baseUrl.'/'.$location.'/'.$filename;
 
             // Upload file
             $file->move($location,$filename);

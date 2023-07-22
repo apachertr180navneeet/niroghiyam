@@ -273,12 +273,15 @@ class RegisterController extends ApiBaseController
         if(!empty($usertoken)){
             if($usertoken->id == $request->user_id){
                 
+                $baseUrl = url('/');
+
+                // File upload location
+                $location = 'uploads';
                 
                 $front_image = $request->file('front_image');
                 $front_imagename = time().'.'.$front_image->getClientOriginalExtension();
-                
-                // File upload location
-                $location = 'uploads';
+
+                $front_images = $baseUrl.'/'.$location.'/'.$front_imagename;
 
                 // Upload file
                 $front_image->move($location,$front_imagename);
@@ -287,9 +290,9 @@ class RegisterController extends ApiBaseController
                 $back_image = $request->file('back_image');
 
                 $back_imagename = time().'.'.$back_image->getClientOriginalExtension();
+
+                $back_images = $baseUrl.'/'.$location.'/'.$back_imagename;
                 
-                // File upload location
-                $location = 'uploads';
 
                 // Upload file
                 $back_image->move($location,$back_imagename);
@@ -297,8 +300,8 @@ class RegisterController extends ApiBaseController
 
                 $datauser = [
                     'user_id' => $request->user_id,
-                    'kyc_front_image' => $front_imagename,
-                    'kyc_back_image' => $back_imagename,
+                    'kyc_front_image' => $front_images,
+                    'kyc_back_image' => $back_images,
                     'back_image' => $request->kyc_detail,
                ];
         
