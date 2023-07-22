@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\{
     RegisterController,
     UserController,
-    CommonController
+    CommonController,
+    HomeController
 };
 
 /*
@@ -51,4 +52,9 @@ Route::controller(CommonController::class)->group(function(){
     Route::post('get_bloodgroup', 'getbloodgroup');
     Route::post('get_allergy', 'getallergy');
     Route::post('get_category', 'getcategory');
+});
+
+
+Route::controller(HomeController::class)->group(function(){
+    Route::post('home_screen', 'home_screen');
 });

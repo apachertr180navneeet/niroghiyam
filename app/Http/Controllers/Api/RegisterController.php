@@ -9,7 +9,9 @@ use App\Http\Controllers\Api\ApiBaseController as ApiBaseController;
 use App\Models\{
     User,
     User_detail,
-    User_kyc
+    User_kyc,
+    Blood_Group,
+    Allergy,
 };
 
 
@@ -41,7 +43,7 @@ class RegisterController extends ApiBaseController
             'country' => 'required',
             'state' => 'required',
             'pincode' => 'required',
-            'password' => 'required'
+            // 'password' => 'required'
         ]);
 
 
@@ -52,7 +54,7 @@ class RegisterController extends ApiBaseController
             'phone_number' => $request->phone_number,
             'type'=> '1',
             'username' => strtolower($request->email),
-            'password' => Hash::make($request->password),
+            'password' => Hash::make('12345678'),
        ];
 
        $user = User::create($datauser);
@@ -87,7 +89,7 @@ class RegisterController extends ApiBaseController
         if($username == ""){
             return response()->json(['error' => 'Username Required !'], 422);
         }else{
-            $useremail =  User::where('email', $request->username)->first();
+            $useremail =  User::where('email', $username)->first();
             if($useremail){
 
                 $length = 32; // Length of the token in bytes
@@ -98,25 +100,25 @@ class RegisterController extends ApiBaseController
                 $success['id'] = $useremail->id;
                 $success['userkyc'] = $useremail->userkyc;
 
-                $user = User::where('email', $useremail->email)
+                $user = User::where('email', $username)
                 ->update(['otp' => $otp,'remember_token' => $token]);
    
                  return $this->sendResponse($success, 'User login successfully.');
             }else{
 
-                $usermobile =  User::where('phone_number', $request->username)->first();
+                $usermobile =  User::where('phone_number', $username)->first();
 
                 if($usermobile){
                     $length = 32; // Length of the token in bytes
 
-                $randomBytes = random_bytes($length);
-                $token = $success['token'] = base64_encode($randomBytes);
-                $otp = $success['otp'] = random_int(100000, 999999);
-                $success['id'] = $usermobile->id;
-                $success['userkyc'] = $usermobile->userkyc;
+                    $randomBytes = random_bytes($length);
+                    $token = $success['token'] = base64_encode($randomBytes);
+                    $otp = $success['otp'] = random_int(100000, 999999);
+                    $success['id'] = $usermobile->id;
+                    $success['userkyc'] = $usermobile->userkyc;
 
-                $user =User::where('phone_number', $usermobile->user)
-                ->update(['otp' => $success['otp'],'remember_token' => $phone_number]);
+                    $user =User::where('phone_number', $username)
+                    ->update(['otp' => $success['otp'],'remember_token' => $token]);
    
                  return $this->sendResponse($success, 'User login successfully.');
                 }else{
@@ -136,19 +138,85 @@ class RegisterController extends ApiBaseController
             'otp' => 'required'
         ]);
 
+        $List = "";
+
+        $user = User::where('id', $request->userid)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
+
+
         
 
-            $user = User::where('id', $request->userid)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
+
+        if(!empty($user)){
+            $success['name'] =  $user->name;
+            $success['user_id'] =  $user->id;
+            $user_detail = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $user->id)->first()->toArray();
 
 
-            if(!empty($user)){
-                $success['name'] =  $user->name;
-                $success['user_id'] =  $user->id;
-                return $this->sendResponse($success, 'Otp Matched');
-            }else{
-                $success['name'] =  "";
-                return $this->sendResponse($success, 'Otp Not Matched');
+            $allergy = explode(",",$user_detail['allergy']);
+
+            foreach ($allergy as $value) {
+                $allergy_list = Allergy::select('id','name')->where('id', $value)->get();
+                foreach ($allergy_list as $id => $title) {
+                    $success['UserAllergy'][] = $title->name;
+                    $List = implode(',', $success['UserAllergy']);
+                }
             }
+
+
+            $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first()->toArray();
+
+            
+
+            if($user_detail['gender'] == '1'){
+                $gender = 'Male';
+            }elseif($user_detail['gender'] == '2'){
+                $gender = 'Female';
+            }else{
+                $gender = 'Other';
+            }
+
+
+            if($user_detail['vecination'] == '1'){
+                $vecination = 'Yes';
+            }else{
+                $vecination = 'No';
+            }
+
+            $success['porsnal_detail'] = [
+                'UserId' => $user_detail['id'],
+                'UserFullName' => $user_detail['name'],
+                'UserEmail' => $user_detail['email'],
+                'UserPhoneNumber' => $user_detail['phone_number'],
+                'UserDob' => $user_detail['date_of_birth'],
+                'UserGender' => $gender,
+                'UserBloodGroup' => $bloodgroup_list['name'],
+                'Uservecination' => $vecination,
+                'UserAllergy' => $List,
+                'UserImage' => $user_detail['profile_image'],
+            ];
+
+
+
+            $success['residental_detail'] = [
+                'address' => $user_detail['address'],
+                'UserImage' => $user_detail['profile_image'],
+                'city' => $user_detail['city'],
+                'state' => $user_detail['state'],
+                'country' => $user_detail['country'],
+            ];
+
+
+            $success['medical_info'] = [
+                'UserBloodGroup' => $bloodgroup_list['name'],
+                'Uservecination' => $vecination,
+                'UserAllergy' => $List,
+                'UserImage' => $user_detail['profile_image'],
+            ];
+            return $this->sendResponse($success, 'Otp Matched');
+        }else{
+            $success['name'] =  "";
+            return $this->sendResponse($success, 'Otp Not Matched');
+        }
          
 
         return response()->json(['error' => 'Invalid credentials'], 401);
