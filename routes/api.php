@@ -8,7 +8,8 @@ use App\Http\Controllers\Api\{
     RegisterController,
     UserController,
     CommonController,
-    HomeController
+    HomeController,
+    UploadReportController
 };
 
 /*
@@ -57,4 +58,10 @@ Route::controller(CommonController::class)->group(function(){
 
 Route::controller(HomeController::class)->group(function(){
     Route::post('home_screen', 'home_screen');
+});
+
+
+Route::controller(UploadReportController::class)->group(function(){
+    Route::post('upload_report', 'upload_report');
+    Route::post('report_list', 'report_list');
 });
