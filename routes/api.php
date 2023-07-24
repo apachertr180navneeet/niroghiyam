@@ -9,7 +9,8 @@ use App\Http\Controllers\Api\{
     UserController,
     CommonController,
     HomeController,
-    UploadReportController
+    UploadReportController,
+    CompliancesController
 };
 
 /*
@@ -64,4 +65,11 @@ Route::controller(HomeController::class)->group(function(){
 Route::controller(UploadReportController::class)->group(function(){
     Route::post('upload_report', 'upload_report');
     Route::post('report_list', 'report_list');
+});
+
+
+
+Route::controller(CompliancesController::class)->group(function(){
+    Route::post('compliancesadd', 'compliancesadd');
+    Route::post('compliances_list', 'compliances_list');
 });
