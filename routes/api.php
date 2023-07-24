@@ -54,6 +54,7 @@ Route::controller(CommonController::class)->group(function(){
     Route::post('get_bloodgroup', 'getbloodgroup');
     Route::post('get_allergy', 'getallergy');
     Route::post('get_category', 'getcategory');
+    Route::post('category_search', 'categorysearch');
 });
 
 

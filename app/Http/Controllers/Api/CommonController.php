@@ -84,4 +84,20 @@ class CommonController extends ApiBaseController
             return $this->sendError('No record Found');
         }
     }
+
+
+
+    public function categorysearch(Request $request){
+
+        $name = $request->name;
+            
+        $category_list = Category::where('name','LIKE','%'.$name.'%')->get();
+
+
+        if(count($category_list) != 0){
+            return $this->sendResponse(CategoryResource::collection($category_list), 'Category retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
 }
