@@ -49,7 +49,11 @@ class UserController extends ApiBaseController
             }
 
 
-            $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first()->toArray();
+            if($user_detail['blood_group'] != ""){
+                $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first();
+            }else{
+                $bloodgroup_list['name'] = "";
+            }
 
             
 
@@ -78,14 +82,14 @@ class UserController extends ApiBaseController
                 'UserBloodGroup' => $bloodgroup_list['name'],
                 'Uservecination' => $vecination,
                 'UserAllergy' => $List,
-                'UserImage' => $user_detail['profile_image'],
+                'UserImage' => ($user_detail['profile_image'] !="") ? ($user_detail['profile_image']) : (""),
             ];
 
 
 
             $success['residental_detail'] = [
                 'address' => $user_detail['address'],
-                'UserImage' => $user_detail['profile_image'],
+                'UserImage' => ($user_detail['profile_image'] !="") ? ($user_detail['profile_image']) : (""),
                 'city' => $user_detail['city'],
                 'state' => $user_detail['state'],
                 'country' => $user_detail['country'],

@@ -34,8 +34,8 @@ class HomeController extends ApiBaseController
             $userid = $request->userid;
 
             $user_detail = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $userid)->first();
-
-
+            
+            $List = "";
             $allergy = explode(",",$user_detail['allergy']);
 
             foreach ($allergy as $value) {
@@ -46,8 +46,11 @@ class HomeController extends ApiBaseController
                 }
             }
 
-
-            $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first()->toArray();
+            if($user_detail['blood_group'] != ""){
+                $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first();
+            }else{
+                $bloodgroup_list['name'] = "";
+            }
 
 
             if($user_detail['vecination'] == '1'){
@@ -62,7 +65,7 @@ class HomeController extends ApiBaseController
                 'UserBloodGroup' => $bloodgroup_list['name'],
                 'Uservecination' => $vecination,
                 'UserAllergy' => $List,
-                'UserImage' => $user_detail['profile_image'],
+                'UserImage' => ($user_detail['profile_image'] !="") ? ($user_detail['profile_image']) : (""),
             ];
 
             //$success['alerylist'] = $alerylist;

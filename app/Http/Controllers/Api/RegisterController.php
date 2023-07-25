@@ -43,7 +43,7 @@ class RegisterController extends ApiBaseController
             'country' => 'required',
             'state' => 'required',
             'pincode' => 'required',
-            // 'password' => 'required'
+            'password' => 'required'
         ]);
 
 
@@ -52,9 +52,8 @@ class RegisterController extends ApiBaseController
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'type'=> '1',
             'username' => strtolower($request->email),
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make($request->phone_number),
        ];
 
        $user = User::create($datauser);
@@ -68,10 +67,6 @@ class RegisterController extends ApiBaseController
            'state' => $request->state,
            'pincode' => $request->pincode,
            'date_of_birth' => $request->dob,
-           'gender' => '1',
-            'blood_group' => '1',
-            'allergy' => '1',
-            'vecination' => '1',
        ];
 
        $token =  $user->createToken('MyApp')->plainTextToken;

@@ -27,6 +27,7 @@ class user_detail extends Authenticatable
         'city',
         'country',
         'state',
+        'membership_id',
         'memebership_start_date',
         'memebership_end_date',
         'gender',
