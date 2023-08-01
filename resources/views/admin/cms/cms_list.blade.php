@@ -1,5 +1,5 @@
 @extends('admin.layout.main_app')
-@section('title', 'Allergy List')
+@section('title', 'CMS List')
 @section('content')
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
