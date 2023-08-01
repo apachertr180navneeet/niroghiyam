@@ -86,7 +86,7 @@ class CategoryController extends Controller
         $id = Category::insertGetId($datauser);
 
 
-        return redirect()->route('admin.category.list')->with('success','User created successfully.');
+        return redirect()->route('admin.category.list')->with('success','Category created successfully.');
 
     }
 

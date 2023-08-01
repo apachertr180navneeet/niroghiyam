@@ -31,6 +31,10 @@
             div#customer_list_filter{
                 float: right;
             }
+
+            .tableimg{
+                width: 7%;
+            }
         </style>
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">

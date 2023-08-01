@@ -53,7 +53,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.no.</th>
-                                                    <th>name</th>
+                                                    <th>Name</th>
+                                                    <th>Image</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -63,6 +64,7 @@
                                                 <tr>
                                                     <td>{{ ++$i }}.</td>
                                                     <td>{{ $category->name }}</td>
+                                                    <td><img src="{{ $category->image }}" class="tableimg" alt=""></td>
                                                     <td>
                                                         @if($category->status =='1')
                                                             <p>Active</p>
@@ -85,7 +87,8 @@
                                             <tfoot>
                                                 <tr>
                                                     <th>S.no.</th>
-                                                    <th>name</th>
+                                                    <th>Name</th>
+                                                    <th>Image</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
