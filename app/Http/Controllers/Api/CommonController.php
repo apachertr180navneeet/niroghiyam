@@ -14,7 +14,8 @@ use App\Models\{
     Membership,
     Blood_Group,
     Allergy,
-    Category
+    Category,
+    CMS
 };
 
 
@@ -31,7 +32,8 @@ use App\Http\Resources\{
     MemebershipResource,
     BloodGroupResource,
     AllergyResources,
-    CategoryResource
+    CategoryResource,
+    CmsResource
 };
 use Illuminate\Http\JsonResponse;
 
@@ -96,6 +98,68 @@ class CommonController extends ApiBaseController
 
         if(count($category_list) != 0){
             return $this->sendResponse(CategoryResource::collection($category_list), 'Category retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+
+    public function term_and_condition(Request $request){
+
+        $name = $request->name;
+            
+        $category_list = CMS::where('page_slug','term and condition')->get();
+
+
+        if(count($category_list) != 0){
+            return $this->sendResponse(CmsResource::collection($category_list), 'Term And Condition retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+
+    public function about_us(Request $request){
+
+        $name = $request->name;
+            
+        $category_list = CMS::where('page_slug','about us')->get();
+
+
+        if(count($category_list) != 0){
+            return $this->sendResponse(CmsResource::collection($category_list), 'About Us retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+
+
+    public function privacy_policy(Request $request){
+
+        $name = $request->name;
+            
+        $category_list = CMS::where('page_slug','privacy policy')->get();
+
+
+        if(count($category_list) != 0){
+            return $this->sendResponse(CmsResource::collection($category_list), 'Privacy Policy retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+
+
+    public function return_policy(Request $request){
+
+        $name = $request->name;
+            
+        $category_list = CMS::where('page_slug','return policy')->get();
+
+
+        if(count($category_list) != 0){
+            return $this->sendResponse(CmsResource::collection($category_list), 'Return Policy retrieved successfully.');
         }else{
             return $this->sendError('No record Found');
         }

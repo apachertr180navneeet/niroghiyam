@@ -94,4 +94,19 @@ class UploadReportController extends ApiBaseController
             return $this->sendError('No record Found');
         }
     }
+
+
+    public function category_report_list(Request $request){
+
+        $userid = $request->userid;
+        $categoryid = $request->categoryid;
+            
+        $report_list_list = UploadReport::where('userid', $userid)->where('category_id', $categoryid)->get();
+    
+        if(!empty($report_list_list)){
+            return $this->sendResponse(UploadReportResource::collection($report_list_list), 'Report retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
 }
