@@ -82,7 +82,7 @@ class CompliancesController extends ApiBaseController
             
         $compliances_list = Compliances::where('userid', $userid)->get();
     
-        if(!empty($compliances_list)){
+        if(count($compliances_list) != 0){
             return $this->sendResponse(CompliancesResource::collection($compliances_list), 'Compliances retrieved successfully.');
         }else{
             return $this->sendError('No record Found');

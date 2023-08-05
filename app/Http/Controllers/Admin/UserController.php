@@ -122,10 +122,7 @@ class UserController extends Controller
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
     }
-    
-    
-    
-    
+       
     public function edit($id){
         if(Auth::check()){
             $user_data = auth()->user();
@@ -140,8 +137,7 @@ class UserController extends Controller
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
     }
-    
-    
+        
     public function update(Request $request){
         $validatedData = $request->validate([
             'name' => 'required',
@@ -186,9 +182,6 @@ class UserController extends Controller
         return redirect()->route('admin.customer.list')->with('success','User created successfully.');
     }
 
-
-
-
     public function delete($id)
     {
         $deleteduserdetail = User_detail::where('user_id', $id)->delete();
@@ -198,8 +191,7 @@ class UserController extends Controller
         $deleted = User::where('id', $id)->delete();
         return response()->json(['success'=>'User Deleted Successfully!']);
     }
-
-
+    
     public function status(Request $request){
         
         $id = $request->id;
@@ -212,5 +204,19 @@ class UserController extends Controller
 
 
         return response()->json(['success'=>'Allergy Status Changes Successfully!']);
+    }
+
+
+
+    public function document($id){
+        if(Auth::check()){
+            $user_data = auth()->user();
+
+            $user_detail = User::where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first();
+
+            return view('admin.customer.customer_doc_report',compact('user_data','user_detail'));
+        }
+
+        return redirect("admin/login")->withSuccess('You are not allowed to access');
     }
 }

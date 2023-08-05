@@ -82,7 +82,7 @@
                                                         <a href="{{ route('admin.customer.view',$user->id) }}" class="btn btn-primary">View</a>
                                                         <a href="{{ route('admin.customer.edit',$user->id) }}" class="btn btn-warning">Edit</a>
                                                         <a href="javascript:void(0)" id="delete-user" data-id="{{ $user->id }}" data-url="{{ route('admin.customer.delete',$user->id) }}"  class="btn btn-danger delete">Delete</a>
-                                                        <!-- <a href="" class="btn btn-success">Docs</a> -->
+                                                        <a href="{{ route('admin.customer.doc',$user->id) }}" class="btn btn-success">Docs</a>
                                                         @if($user->status =='0')
                                                             <a href="javascript:void(0)" data-id="{{ $user->id }}" data-status="1" data-url="{{ route('admin.customer.status',$user->id) }}" class="btn btn-success status">Active</a>
                                                         @else

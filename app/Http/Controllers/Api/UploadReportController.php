@@ -88,7 +88,7 @@ class UploadReportController extends ApiBaseController
             
         $report_list_list = UploadReport::where('userid', $userid)->get();
     
-        if(!empty($report_list_list)){
+        if(count($report_list_list) != 0){
             return $this->sendResponse(UploadReportResource::collection($report_list_list), 'Report retrieved successfully.');
         }else{
             return $this->sendError('No record Found');
@@ -103,7 +103,7 @@ class UploadReportController extends ApiBaseController
             
         $report_list_list = UploadReport::where('userid', $userid)->where('category_id', $categoryid)->get();
     
-        if(!empty($report_list_list)){
+        if(count($report_list_list) != 0){
             return $this->sendResponse(UploadReportResource::collection($report_list_list), 'Report retrieved successfully.');
         }else{
             return $this->sendError('No record Found');

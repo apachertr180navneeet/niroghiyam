@@ -10,7 +10,8 @@ use App\Http\Controllers\Api\{
     CommonController,
     HomeController,
     UploadReportController,
-    CompliancesController
+    CompliancesController,
+    VaccinationController
 };
 
 /*
@@ -78,5 +79,11 @@ Route::controller(UploadReportController::class)->group(function(){
 Route::controller(CompliancesController::class)->group(function(){
     Route::post('compliancesadd', 'compliancesadd');
     Route::post('compliances_list', 'compliances_list');
+});
+
+Route::controller(VaccinationController::class)->group(function(){
+    Route::post('vaccinationadd', 'vaccinationadd');
+    Route::post('vaccination_list', 'vaccination_list');
+    Route::post('vaccination_year_list', 'vaccination_year_list');
 });
 

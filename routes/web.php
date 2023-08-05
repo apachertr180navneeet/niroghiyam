@@ -55,6 +55,7 @@ Route::name('admin.')->prefix('admin')->controller(UserController::class)->middl
     Route::post('customer_update', 'update')->name('customer.update');
     Route::delete('customer_delete/{id}', 'delete')->name('customer.delete');
     Route::get('customer_status/{id}', 'status')->name('customer.status');
+    Route::get('customer_doc/{id}', 'document')->name('customer.doc');
 });
 
 
