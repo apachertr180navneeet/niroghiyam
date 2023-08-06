@@ -11,7 +11,8 @@ use App\Http\Controllers\Api\{
     HomeController,
     UploadReportController,
     CompliancesController,
-    VaccinationController
+    VaccinationController,
+    EmergancyContactController
 };
 
 /*
@@ -85,5 +86,12 @@ Route::controller(VaccinationController::class)->group(function(){
     Route::post('vaccinationadd', 'vaccinationadd');
     Route::post('vaccination_list', 'vaccination_list');
     Route::post('vaccination_year_list', 'vaccination_year_list');
+});
+
+
+Route::controller(EmergancyContactController::class)->group(function(){
+    Route::post('emergancycontactadd', 'emergancycontactadd');
+    Route::post('emergancycontactlist', 'emergancycontactlist');
+    Route::post('emergancycontactdelete', 'emergancycontactdelete');
 });
 

@@ -9,7 +9,9 @@ use App\Models\{
     User_detail,
     User_kyc,
     Allergy,
-    Blood_Group
+    Blood_Group,
+    UploadReport,
+    Category
 };
 
 
@@ -214,7 +216,11 @@ class UserController extends Controller
 
             $user_detail = User::where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first();
 
-            return view('admin.customer.customer_doc_report',compact('user_data','user_detail'));
+            $user_report = UploadReport::where('userid', $id)->join('categories', 'upload_report.category_id', '=', 'categories.id')->first();
+            
+            echo"<pre>"; print_r($user_report); die;
+
+            return view('admin.customer.customer_doc_report',compact('user_data','user_detail','user_report'));
         }
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');

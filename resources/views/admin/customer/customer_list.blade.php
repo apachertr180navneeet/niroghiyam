@@ -92,18 +92,6 @@
                                                 </tr>
                                                 @endforeach
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>S.no.</th>
-                                                    <th>Customer name</th>
-                                                    <th>Email</th>
-                                                    <th>Phone no.</th>
-                                                    <th>City</th>
-                                                    <th>State</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
 
                                         <div class="d-flex justify-content-center">
