@@ -60,7 +60,10 @@ class UploadReportController extends ApiBaseController
             $file = $request->file('file');
             $filename = time().'.'.$file->getClientOriginalExtension();
 
-            $files = $baseUrl.'/'.$location.'/'.$filename;
+           $files = $baseUrl.'/'.$location.'/'.$filename;
+
+           // Upload file
+           $file->move($location,$filename);
 
 
 

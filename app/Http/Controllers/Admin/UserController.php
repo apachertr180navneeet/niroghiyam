@@ -214,11 +214,14 @@ class UserController extends Controller
         if(Auth::check()){
             $user_data = auth()->user();
 
-            $user_detail = User::where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first();
+            $selectedColumnsUserDetail = ['id', 'name','kyc_front_image','kyc_back_image','kyc_detail'];
 
-            $user_report = UploadReport::where('userid', $id)->join('categories', 'upload_report.category_id', '=', 'categories.id')->first();
+            $selectedColumnsUserReport = ['upload_report.id', 'titel','date','file','categories.name AS cat_name'];
+
+            $user_detail = User::select($selectedColumnsUserDetail)->where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first()->toArray();
+
+            $user_report = UploadReport::select($selectedColumnsUserReport)->where('userid', $id)->join('categories', 'upload_report.category_id', '=', 'categories.id')->get()->toArray();
             
-            echo"<pre>"; print_r($user_report); die;
 
             return view('admin.customer.customer_doc_report',compact('user_data','user_detail','user_report'));
         }

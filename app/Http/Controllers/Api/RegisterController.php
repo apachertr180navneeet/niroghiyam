@@ -274,7 +274,7 @@ class RegisterController extends ApiBaseController
                 $location = 'uploads';
                 
                 $front_image = $request->file('front_image');
-                $front_imagename = time().'.'.$front_image->getClientOriginalExtension();
+                $front_imagename = time().'front_image.'.$front_image->getClientOriginalExtension();
 
                 $front_images = $baseUrl.'/'.$location.'/'.$front_imagename;
 
@@ -284,7 +284,7 @@ class RegisterController extends ApiBaseController
 
                 $back_image = $request->file('back_image');
 
-                $back_imagename = time().'.'.$back_image->getClientOriginalExtension();
+                $back_imagename = time().'back_image.'.$back_image->getClientOriginalExtension();
 
                 $back_images = $baseUrl.'/'.$location.'/'.$back_imagename;
                 
@@ -297,7 +297,7 @@ class RegisterController extends ApiBaseController
                     'user_id' => $request->user_id,
                     'kyc_front_image' => $front_images,
                     'kyc_back_image' => $back_images,
-                    'back_image' => $request->kyc_detail,
+                    'kyc_detail' => $request->kyc_detail,
                ];
         
                $user = User_kyc::create($datauser);
