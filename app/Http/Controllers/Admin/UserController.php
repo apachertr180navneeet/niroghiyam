@@ -36,7 +36,7 @@ class UserController extends Controller
         if(Auth::check()){
             $user_data = auth()->user();
 
-            $user_list = User::where('type', '1')->select('users.id','users.status','users.name','users.email','users.phone_number','user_detail.city','user_detail.state')->join('user_detail', 'users.id', '=', 'user_detail.user_id')->paginate(10);
+            $user_list = User::where('type', '1')->select('users.id','users.status','users.userkyc','users.name','users.email','users.phone_number','user_detail.city','user_detail.state')->join('user_detail', 'users.id', '=', 'user_detail.user_id')->paginate(10);
             
             return view('admin.customer.customer_list',compact('user_data','user_list'))->with('i', (request()->input('page', 1) - 1) * 1);
         }
@@ -101,7 +101,7 @@ class UserController extends Controller
 
 
         $datauserkyc = [
-            'user_id' => $id    ,
+            'user_id' => $id,
             'kyc_detail' => $request->kyc_number,
         ];
 
@@ -218,9 +218,21 @@ class UserController extends Controller
 
             $selectedColumnsUserReport = ['upload_report.id', 'titel','date','file','categories.name AS cat_name'];
 
-            $user_detail = User::select($selectedColumnsUserDetail)->where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first()->toArray();
+            $user_details = User::select($selectedColumnsUserDetail)->where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first();
 
-            $user_report = UploadReport::select($selectedColumnsUserReport)->where('userid', $id)->join('categories', 'upload_report.category_id', '=', 'categories.id')->get()->toArray();
+            if(!empty($user_details)){
+                $user_detail = $user_details->toArray();
+            }else{
+                $user_detail = "";
+            }
+
+            $user_reports = UploadReport::select($selectedColumnsUserReport)->where('userid', $id)->join('categories', 'upload_report.category_id', '=', 'categories.id')->get();
+
+            if(!empty($user_reports)){
+                $user_report = $user_reports->toArray();
+            }else{
+                $user_report = "";
+            }
             
 
             return view('admin.customer.customer_doc_report',compact('user_data','user_detail','user_report'));
