@@ -14,7 +14,8 @@ use App\Models\{
 
 
 use App\Http\Resources\{
-    VaccinationResource
+    VaccinationResource,
+    YearResource
 };
 
 
