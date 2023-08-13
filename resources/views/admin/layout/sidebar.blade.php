@@ -82,10 +82,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.cms.list') }}" class="nav-link">
+                    <a href="{{ route('admin.complains.list') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Content Managment System
+                            Complains management
                         </p>
                     </a>
                 </li>

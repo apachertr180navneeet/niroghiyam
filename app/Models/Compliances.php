@@ -16,6 +16,7 @@ class Compliances extends Model
         'titel',
         'description',
         'file',
-        'userid'
+        'userid',
+        'replyed'
     ];
 }

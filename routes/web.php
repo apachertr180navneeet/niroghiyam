@@ -11,7 +11,8 @@ use App\Http\Controllers\Admin\{
     BloodGroupController,
     CategoryController,
     MembershipController,
-    CMSController
+    CMSController,
+    ComplainsController
 };
 
 /*
@@ -115,6 +116,14 @@ Route::name('admin.')->prefix('admin')->controller(CMSController::class)->middle
     Route::post('cms_update', 'update')->name('cms.update');
     Route::delete('cms_delete/{id}', 'delete')->name('cms.delete');
     Route::get('cms_status/{id}', 'status')->name('cms.status');
+});
+
+
+
+Route::name('admin.')->prefix('admin')->controller(ComplainsController::class)->middleware('web')->group(function () {
+    Route::get('complains_list', 'index')->name('complains.list');
+    Route::get('complains_edit/{id}', 'edit')->name('complains.edit');
+    Route::post('complains_reply', 'reply')->name('complains.reply');
 });
 
 

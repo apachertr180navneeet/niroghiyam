@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiBaseController as ApiBaseController;
 
 use App\Models\{
-    Compliances
+    Compliances,
+    CompliancesMessgae
 };
 
 
@@ -56,6 +57,10 @@ class CompliancesController extends ApiBaseController
             $filename = time().'.'.$file->getClientOriginalExtension();
 
             $files = $baseUrl.'/'.$location.'/'.$filename;
+
+
+            // Upload file
+            $file->move($location,$filename);
 
 
 
