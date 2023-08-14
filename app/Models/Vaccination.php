@@ -26,5 +26,6 @@ class Vaccination extends Authenticatable
         'place',
         'remark',
         'status',
+        'type'
     ];
 }

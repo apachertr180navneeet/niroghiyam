@@ -12,7 +12,8 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     MembershipController,
     CMSController,
-    ComplainsController
+    ComplainsController,
+    VaccinationController
 };
 
 /*
@@ -126,5 +127,10 @@ Route::name('admin.')->prefix('admin')->controller(ComplainsController::class)->
     Route::post('complains_reply', 'reply')->name('complains.reply');
 });
 
+
+
+Route::name('admin.')->prefix('admin')->controller(VaccinationController::class)->middleware('web')->group(function () {
+    Route::get('vaccination._list', 'index')->name('vaccination.list');
+});
 
 
