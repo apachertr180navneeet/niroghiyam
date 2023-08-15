@@ -42,22 +42,31 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="name">Membership Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" />
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Enter Name" />
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Membership price</label>
-                                    <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" />
+                                    <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}" placeholder="Enter price" />
                                     @error('price')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
+                                    <label>Membership Mode</label>
+                                    <select class="form-control" name="membership_mode">
+                                        @foreach ($memebership_mode as $mode)
+                                        <option value="{{ $mode->id }}">{{ $mode->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Membership Description</label>
-                                    <textarea class="form-control" name="description" rows="3" placeholder="Enter ..."></textarea>
+                                    <textarea class="form-control" name="description" rows="3" placeholder="Enter ...">{{ old('description') }}</textarea>
                                     @error('description')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror

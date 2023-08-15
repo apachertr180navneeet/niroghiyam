@@ -53,7 +53,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.no.</th>
-                                                    <th>name</th>
+                                                    <th>Name</th>
+                                                    <th>Membership Mode</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -63,6 +64,7 @@
                                                 <tr>
                                                     <td>{{ ++$i }}.</td>
                                                     <td>{{ $memebership->name }}</td>
+                                                    <td>{{ $memebership->membershipmodename }}</td>
                                                     <td>
                                                         @if($memebership->status =='1')
                                                             <p>Active</p>

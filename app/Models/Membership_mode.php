@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Membership extends Model
+class Membership_mode extends Model
 {
     use HasFactory;
 
 
-    protected $table = 'memberships';
+    protected $table = 'membership_mode';
 
     protected $fillable = [
         'name',
-        'description',
-        'amount',
-        'status',
-        'membership_mode',
+        'description'
     ];
 }
