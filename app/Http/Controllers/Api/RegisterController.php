@@ -53,7 +53,7 @@ class RegisterController extends ApiBaseController
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'username' => strtolower($request->email),
-            'password' => Hash::make($request->phone_number),
+            'password' => Hash::make($request->password),
        ];
 
        $user = User::create($datauser);
@@ -80,6 +80,8 @@ class RegisterController extends ApiBaseController
     public function login(Request $request)
     {
         $username = $request->username;
+        $password = Hash::make($request->password);
+        
 
         if($username == ""){
             return response()->json(['error' => 'Username Required !'], 422);
@@ -267,48 +269,55 @@ class RegisterController extends ApiBaseController
 
         if(!empty($usertoken)){
             if($usertoken->id == $request->user_id){
+
+                $userkyc = User_kyc::where('user_id', $request->user_id)->first();
+
+                if(!empty($userkyc)){
+                    $success['user'] = "KYC alrady done"; 
+                    return $this->sendResponse($success, 'KYC alrady done');
+                }else{
+                    $baseUrl = url('/');
+
+                    // File upload location
+                    $location = 'uploads';
+                    
+                    $front_image = $request->file('front_image');
+                    $front_imagename = time().'front_image.'.$front_image->getClientOriginalExtension();
+
+                    $front_images = $baseUrl.'/'.$location.'/'.$front_imagename;
+
+                    // Upload file
+                    $front_image->move($location,$front_imagename);
+
+
+                    $back_image = $request->file('back_image');
+
+                    $back_imagename = time().'back_image.'.$back_image->getClientOriginalExtension();
+
+                    $back_images = $baseUrl.'/'.$location.'/'.$back_imagename;
+                    
+
+                    // Upload file
+                    $back_image->move($location,$back_imagename);
+
+
+                    $datauser = [
+                        'user_id' => $request->user_id,
+                        'kyc_front_image' => $front_images,
+                        'kyc_back_image' => $back_images,
+                        'kyc_detail' => $request->kyc_detail,
+                    ];
                 
-                $baseUrl = url('/');
+                    $user = User_kyc::create($datauser);
 
-                // File upload location
-                $location = 'uploads';
-                
-                $front_image = $request->file('front_image');
-                $front_imagename = time().'front_image.'.$front_image->getClientOriginalExtension();
+                    $success['user_id'] = $usertoken->id;
+                    $success['user_name'] = $usertoken->name;
 
-                $front_images = $baseUrl.'/'.$location.'/'.$front_imagename;
+                    $user =User::where('id', $request->user_id)
+                        ->update(['userkyc' => '1']);
 
-                // Upload file
-                $front_image->move($location,$front_imagename);
-
-
-                $back_image = $request->file('back_image');
-
-                $back_imagename = time().'back_image.'.$back_image->getClientOriginalExtension();
-
-                $back_images = $baseUrl.'/'.$location.'/'.$back_imagename;
-                
-
-                // Upload file
-                $back_image->move($location,$back_imagename);
-
-
-                $datauser = [
-                    'user_id' => $request->user_id,
-                    'kyc_front_image' => $front_images,
-                    'kyc_back_image' => $back_images,
-                    'kyc_detail' => $request->kyc_detail,
-               ];
-        
-               $user = User_kyc::create($datauser);
-
-               $success['user_id'] = $usertoken->id;
-               $success['user_name'] = $usertoken->name;
-
-               $user =User::where('id', $request->user_id)
-                ->update(['userkyc' => '1']);
-
-               return $this->sendResponse($success, 'User kyc Updated');
+                    return $this->sendResponse($success, 'User kyc Updated');
+                }
 
             }else{
                 $success['user'] = "User Not Found"; 

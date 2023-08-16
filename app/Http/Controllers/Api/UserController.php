@@ -122,6 +122,8 @@ class UserController extends ApiBaseController
 
         ]);
 
+        $userid = $request->id;
+
         $baseUrl = url('/');
         
         if($request->file('profile_image') != ""){
@@ -137,17 +139,24 @@ class UserController extends ApiBaseController
 
             // Upload file
             $file->move($location,$filename);
-        }else{
-            $imageupload = "";
+
+
+            $userdata = [
+                'name' => $request->name,
+                'phone_number' => $request->phone_number,
+                'profile_image' => $imageupload,
+            ];
+    
+    
+            User::where('id', $userid)->update($userdata);
         }
 
 
-        $userid = $request->id;
+        
 
         $userdata = [
             'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'profile_image' => $imageupload,
+            'phone_number' => $request->phone_number
         ];
 
 
