@@ -70,14 +70,15 @@ class UserController extends Controller
             'phone_number' => 'required|numeric|min:0|max:10',
             'address' => 'required',
             'city' => 'required',
-            'state' => 'required'
+            'state' => 'required',
+            'password' => 'required'
         ]);
 
         $datauser = [
              'name' => $request->name,
              'email' => $request->email,
              'phone_number' => $request->phone_number,
-             'password' => Hash::make('12345678'),
+             'password' => Hash::make($request->password),
              'type'=> '1',
              'username' => strtolower($request->email),
         ];

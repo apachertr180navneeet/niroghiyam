@@ -42,62 +42,69 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="name">Customer Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" />
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Enter Name" />
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="phone_number">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Enter Phone Number" />
+                                    <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" placeholder="Enter Phone Number" />
                                     @error('phone_number')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter email" />
+                                    <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="Enter email" />
                                     @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" placeholder="Enter password" />
+                                    @error('password')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Date of Birth:</label>
                                     <div class="input-group date" id="dob" data-target-input="nearest">
-                                        <input type="date" class="form-control datetimepicker-input" name="dob" id="dob" />
+                                        <input type="date" class="form-control datetimepicker-input" name="dob" value="{{ old('dob') }}" id="dob" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" />
+                                    <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}" placeholder="Enter Address" />
                                     @error('address')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="city">City</label>
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="Enter City" />
+                                    <input type="text" class="form-control" id="city" name="city" value="{{ old('city') }}" placeholder="Enter City" />
                                     @error('city')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="state">State</label>
-                                    <input type="text" class="form-control" id="state" name="state" placeholder="Enter State" />
+                                    <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}" placeholder="Enter State" />
                                     @error('state')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="pincode">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Enter Pincode" />
+                                    <input type="text" class="form-control" id="pincode" name="pincode" value="{{ old('pincode') }}" placeholder="Enter Pincode" />
                                     @error('pincode')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="profileimage">Profile Image</label>
-                                    <input type="file" class="form-control" id="profileimage" name="profileimage" />
+                                    <input type="file" class="form-control" id="profileimage" name="profileimage" value="{{ old('profileimage') }}"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Gender</label>
