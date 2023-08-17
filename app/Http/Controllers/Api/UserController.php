@@ -13,6 +13,7 @@ use App\Models\{
     User_kyc,
     Blood_Group,
     Allergy,
+    User_membership
 };
 
 
@@ -108,19 +109,19 @@ class UserController extends ApiBaseController
             return $this->sendResponse($success, 'User detail Get');
     }
     public function profileupdate(Request $request){
-        $request->validate([
-            'name' => 'required',
-            'phone_number' => 'required',
-            'dob' => 'required',
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'gender' => 'required',
-            'blood_group' => 'required',
-            'allergy' => 'required',
-            'vecination' => 'required',
+        // $request->validate([
+        //     'name' => 'required',
+        //     'phone_number' => 'required',
+        //     'dob' => 'required',
+        //     'address' => 'required',
+        //     'city' => 'required',
+        //     'state' => 'required',
+        //     'gender' => 'required',
+        //     'blood_group' => 'required',
+        //     'allergy' => 'required',
+        //     'vecination' => 'required',
 
-        ]);
+        // ]);
 
         $userid = $request->id;
 

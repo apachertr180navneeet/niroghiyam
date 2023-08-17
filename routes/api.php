@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\{
     CompliancesController,
     VaccinationController,
     EmergancyContactController,
-    UserPackageController,
+    UserPackageController
 };
 
 /*
