@@ -15,7 +15,7 @@ use App\Models\{
 };
 
 
-
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 use Illuminate\Support\Facades\{
     Auth,
@@ -99,6 +99,10 @@ class RegisterController extends ApiBaseController
 
                 $user = User::where('email', $username)
                 ->update(['otp' => $otp,'remember_token' => $token]);
+
+                 // Save OTP to Firebase Realtime Database or Firestore
+                $database = Firebase::database();
+                $database->getReference('otps')->child($useremail->phone_number)->set($otp);
    
                  return $this->sendResponse($success, 'User login successfully.');
             }else{
@@ -113,9 +117,13 @@ class RegisterController extends ApiBaseController
                     $otp = $success['otp'] = random_int(100000, 999999);
                     $success['id'] = $usermobile->id;
                     $success['userkyc'] = $usermobile->userkyc;
+                    
 
                     $user =User::where('phone_number', $username)
                     ->update(['otp' => $success['otp'],'remember_token' => $token]);
+
+                    $database = Firebase::database();
+                $database->getReference('otps')->child($username)->set($otp);
    
                  return $this->sendResponse($success, 'User login successfully.');
                 }else{
