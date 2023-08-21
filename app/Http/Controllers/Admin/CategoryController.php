@@ -111,11 +111,38 @@ class CategoryController extends Controller
         ]);
 
         $id = $request->id;
-        $datauser = [
-             'name' => $request->name,
-        ];
 
-        Category::where('id', $id)->update($datauser);
+        $baseUrl = url('/');
+
+
+        if(!empty($request->file('caticon'))){
+            $file = $request->file('caticon');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            
+            
+            
+            // File upload location
+            $location = 'uploads';
+            
+            $imageupload = $baseUrl.'/'.$location.'/'.$filename;
+            
+            // Upload file
+            $file->move($location,$filename);
+
+            $datauser = [
+                'name' => $request->name,
+                'image' => $imageupload
+           ];
+   
+           Category::where('id', $id)->update($datauser);
+
+        }else{
+            $datauser = [
+                'name' => $request->name,
+           ];
+   
+           Category::where('id', $id)->update($datauser);
+        }
 
 
         return redirect()->route('admin.category.list')->with('success','Category created successfully.');

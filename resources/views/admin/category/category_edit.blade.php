@@ -1,7 +1,15 @@
 @extends('admin.layout.main_app')
 @section('title', 'Category Edit')
 @section('content')
-            <!-- Content Wrapper. Contains page content -->
+
+
+<style>
+    .categoryimg {
+        width: 7%;
+    }
+</style>
+
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -47,6 +55,13 @@
                                     @error('name')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                                <div class="form-group mb-3">
+                                    <img src="{{ $category->image }}" class="categoryimg">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="caticon" class="form-label">Category Icon</label>
+                                    <input class="form-control" type="file" name="caticon" id="caticon">
                                 </div>
                                 <div class="card-footer">
                                   <button type="submit" class="btn btn-primary">Save</button>
