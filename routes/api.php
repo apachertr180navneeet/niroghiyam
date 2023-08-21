@@ -74,6 +74,7 @@ Route::controller(UploadReportController::class)->group(function(){
     Route::post('upload_report', 'upload_report');
     Route::post('report_list', 'report_list');
     Route::post('category_report_list', 'category_report_list');
+    Route::post('report_search', 'report_search');
 });
 
 
