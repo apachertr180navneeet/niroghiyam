@@ -17,10 +17,10 @@ class User_membership extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $table = 'user_membership';
+    protected $table = 'user_packages';
     protected $fillable = [
         'user_id',
-        'membership_id',
+        'package_id',
         'transiction_id',
         'amount',
         'start_date',

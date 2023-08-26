@@ -42,7 +42,7 @@ class CommonController extends ApiBaseController
 {
     public function getmembership(){
             
-        $memebership_list = Membership::where('status', '1')->get();
+        $memebership_list = Membership::where('status', '1')->select('memberships.id AS membership_id','memberships.name AS membership_name','memberships.description','memberships.amount','membership_mode.name AS membership_mode_name')->join('membership_mode', 'membership_mode.id', '=', 'memberships.membership_mode')->get();
 
         if(!empty($memebership_list)){
             return $this->sendResponse(MemebershipResource::collection($memebership_list), 'Membership retrieved successfully.');

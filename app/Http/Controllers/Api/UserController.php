@@ -13,7 +13,8 @@ use App\Models\{
     User_kyc,
     Blood_Group,
     Allergy,
-    User_membership
+    User_membership,
+    Membership
 };
 
 
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\{
 use Validator;
 
 use URL;
+
+use Carbon\Carbon;
 
 class UserController extends ApiBaseController
 {
@@ -109,19 +112,6 @@ class UserController extends ApiBaseController
             return $this->sendResponse($success, 'User detail Get');
     }
     public function profileupdate(Request $request){
-        // $request->validate([
-        //     'name' => 'required',
-        //     'phone_number' => 'required',
-        //     'dob' => 'required',
-        //     'address' => 'required',
-        //     'city' => 'required',
-        //     'state' => 'required',
-        //     'gender' => 'required',
-        //     'blood_group' => 'required',
-        //     'allergy' => 'required',
-        //     'vecination' => 'required',
-
-        // ]);
 
         $userid = $request->id;
 
@@ -183,5 +173,92 @@ class UserController extends ApiBaseController
 
             
             return $this->sendResponse($success, 'User detail updated');
+    }
+
+    public function usermembership(Request $request){
+        $request->validate([
+            'user_id' => 'required',
+            'package_id' => 'required',
+        ]);
+        
+        $checkuser =  User::where('id', $request->user_id)->first();
+        
+        if(!empty($checkuser)){
+            $checkUsermembership =  User_membership::where('user_id', $request->user_id)->first();
+
+            $membership_detail =  Membership::where('memberships.id', $request->package_id)->select('memberships.id AS membership_id','memberships.name AS membership_name','memberships.description','memberships.amount','membership_mode.name AS membership_mode_name')->join('membership_mode', 'membership_mode.id', '=', 'memberships.membership_mode')->first();
+
+            $timestamp = time(); // Current Unix timestamp
+            $random = uniqid(); // Generate a unique identifier
+            $transaction_id = $timestamp . '_' . $random;
+
+            $currentDateTime = Carbon::now();
+
+            $start_date = $currentDateTime->format('Y-m-d H:i:s');
+            
+            if($membership_detail->membership_mode_name == "Monthly"){
+                $end_date = $currentDateTime->addMonth()->format('Y-m-d H:i:s');
+            }elseif($membership_detail->membership_mode_name == "Quarter"){
+                $end_date = $currentDateTime->addMonth(3)->format('Y-m-d H:i:s');
+            }elseif($membership_detail->membership_mode_name == "half yearly"){
+                $end_date = $currentDateTime->addMonth(6)->format('Y-m-d H:i:s');
+            }else{
+                $end_date = $currentDateTime->addYear()->format('Y-m-d H:i:s');
+            }
+
+            if(!empty($checkUsermembership)){
+                if($checkUsermembership->package_id != $request->package_id){
+                    $datamembership = [
+                        'user_id' => $request->user_id,
+                        'package_id' => $request->package_id,
+                        'transiction_id' => $transaction_id,
+                        'amount' => $membership_detail->amount,
+                        'start_date' => $start_date,
+                        'end_date' => $end_date,
+                   ];
+
+                   User_membership::where('user_package_id', $checkUsermembership->user_package_id)->update($datamembership);
+            
+                   
+                   return response()->json(['message' => 'User Membership Updated successful'], 200);
+                }else{
+                    return response()->json(['error' => 'Same Membership Already Taken'], 401);
+                }                    
+            }else{
+                $datamembership = [
+                    'user_id' => $request->user_id,
+                    'package_id' => $request->package_id,
+                    'transiction_id' => $transaction_id,
+                    'amount' => $membership_detail->amount,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+               ];
+        
+               $usermembership = User_membership::create($datamembership);
+
+               return response()->json(['message' => 'User Membership Taken successful'], 200);
+            }
+        }else{
+            return response()->json(['error' => 'User Not Found'], 401);
+        }
+    }
+    public function getusermembership(Request $request){
+        $request->validate([
+            'user_id' => 'required'
+        ]);
+
+        $checkUsermembership =  User_membership::where('user_packages.user_id', $request->user_id)->join('memberships', 'memberships.id', '=', 'user_packages.package_id')->first();
+        if(!empty($checkUsermembership)){
+            $success['usermembership'] = [
+                'Membership Name' => $checkUsermembership->name,
+                'Membership Amount' => $checkUsermembership->amount,
+                'Membership Start Date' => $checkUsermembership->start_date,
+                'Membership End Date' => $checkUsermembership->end_date,
+            ];
+            return $this->sendResponse($success, 'Membeship Detail');
+        }else{
+            return response()->json(['error' => 'User Membership Already Taken'], 401);
+        }
+
     }
 }

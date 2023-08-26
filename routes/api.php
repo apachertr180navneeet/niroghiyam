@@ -48,6 +48,8 @@ Route::controller(RegisterController::class)->group(function(){
 Route::controller(UserController::class)->group(function(){
     Route::post('get_user', 'getuser');
     Route::post('profile_update', 'profileupdate');
+    Route::post('user_membership', 'usermembership');
+    Route::post('get_user_membership', 'getusermembership');
 });
 
 
