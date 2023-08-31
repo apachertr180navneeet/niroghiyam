@@ -174,7 +174,6 @@ class UserController extends ApiBaseController
             
             return $this->sendResponse($success, 'User detail updated');
     }
-
     public function usermembership(Request $request){
         $request->validate([
             'user_id' => 'required',

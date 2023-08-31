@@ -13,7 +13,8 @@ use App\Http\Controllers\Admin\{
     MembershipController,
     CMSController,
     ComplainsController,
-    VaccinationController
+    VaccinationController,
+    TransictionListController
 };
 
 /*
@@ -130,7 +131,12 @@ Route::name('admin.')->prefix('admin')->controller(ComplainsController::class)->
 
 
 Route::name('admin.')->prefix('admin')->controller(VaccinationController::class)->middleware('web')->group(function () {
-    Route::get('vaccination._list', 'index')->name('vaccination.list');
+    Route::get('vaccination_list', 'index')->name('vaccination.list');
+});
+
+
+Route::name('admin.')->prefix('admin')->controller(TransictionListController::class)->middleware('web')->group(function () {
+    Route::get('transiction_list', 'index')->name('transiction.list');
 });
 
 
