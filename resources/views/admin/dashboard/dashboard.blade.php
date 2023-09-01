@@ -30,7 +30,15 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
-                    
+                    <div class="col-md-3">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">User Count</h5>
+                                <p class="card-text">{{$userCount}}</p>
+                                <a href="{{ route('admin.customer.list') }}" class="btn btn-primary">user list</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.row -->
             </div>

@@ -32,8 +32,10 @@ class DashboardController extends Controller
     {
         if(Auth::check()){
             $user_data = auth()->user();
+
+            $userCount = User::where('type', '1')->count();
             
-            return view('admin.dashboard.dashboard',compact('user_data'));
+            return view('admin.dashboard.dashboard',compact('user_data','userCount'));
         }
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
