@@ -14,7 +14,8 @@ use App\Http\Controllers\Admin\{
     CMSController,
     ComplainsController,
     VaccinationController,
-    TransictionListController
+    TransictionListController,
+    LogsController
 };
 
 /*
@@ -137,6 +138,11 @@ Route::name('admin.')->prefix('admin')->controller(VaccinationController::class)
 
 Route::name('admin.')->prefix('admin')->controller(TransictionListController::class)->middleware('web')->group(function () {
     Route::get('transiction_list', 'index')->name('transiction.list');
+});
+
+
+Route::name('admin.')->prefix('admin')->controller(LogsController::class)->middleware('web')->group(function () {
+    Route::get('logs', 'index')->name('logs');
 });
 
 
