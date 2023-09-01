@@ -12,6 +12,7 @@ use App\Models\{
     User_kyc,
     Blood_Group,
     Allergy,
+    Logs
 };
 
 
@@ -47,33 +48,41 @@ class RegisterController extends ApiBaseController
         ]);
 
 
-
+        
         $datauser = [
             'name' => $request->name,
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'username' => strtolower($request->email),
-            'password' => Hash::make($request->password),
-       ];
+            'password' => Hash::make($request->password)
+        ];
+        
+        $user = User::create($datauser);
+        $id = $user->id;
+        $token =  $user->createToken('MyApp')->plainTextToken;
 
-       $user = User::create($datauser);
-       $id = $user->id;
+        $datauserdetail = [
+            'user_id' => $id    ,
+            'address' => $request->address,
+            'city' => $request->city,
+            'country' => $request->country,
+            'state' => $request->state,
+            'pincode' => $request->pincode,
+            'date_of_birth' => $request->dob,
+        ];
+        $userdetail = User_detail::create($datauserdetail);
 
-       $datauserdetail = [
-           'user_id' => $id    ,
-           'address' => $request->address,
-           'city' => $request->city,
-           'country' => $request->country,
-           'state' => $request->state,
-           'pincode' => $request->pincode,
-           'date_of_birth' => $request->dob,
-       ];
+        $dataLogs = [
+                'user_id' => $id,
+                'message' => $request->name.",You Have registered in Niroghya"
+            ];
 
-       $token =  $user->createToken('MyApp')->plainTextToken;
+            $notification = Logs::create($dataLogs);
 
-       $userdetail = User_detail::create($datauserdetail);
+            $notificationData['user_id'] = $notification->user_id;
+            $notificationData['message'] = $notification->message; 
 
-        return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token], 200);
+            return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token, 'Notification' => $notificationData], 200);
     }
 
 
