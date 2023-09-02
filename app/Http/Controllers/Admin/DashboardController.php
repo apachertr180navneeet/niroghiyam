@@ -34,8 +34,10 @@ class DashboardController extends Controller
             $user_data = auth()->user();
 
             $userCount = User::where('type', '1')->count();
+            $userCountActive = User::where('type', '1')->where('status', '1')->count();
+            $userCountInActive = User::where('type', '1')->where('status', '0')->count();
             
-            return view('admin.dashboard.dashboard',compact('user_data','userCount'));
+            return view('admin.dashboard.dashboard',compact('user_data','userCount','userCountActive','userCountInActive'));
         }
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');

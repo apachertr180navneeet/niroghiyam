@@ -31,11 +31,29 @@
                 <!-- Small boxes (Stat box) -->
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="card" style="width: 18rem;">
+                        <div class="card align-items-center h-100" style="width: 18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">User Count</h5>
-                                <p class="card-text">{{$userCount}}</p>
-                                <a href="{{ route('admin.customer.list') }}" class="btn btn-primary">user list</a>
+                                <h5 class="card-title text-uppercase">User</h5>
+                                <p class="card-text text-center font-weight-bold">{{$userCount}}</p>
+                                <a href="{{ route('admin.customer.list') }}" class="btn btn-primary text-uppercase">user list</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card align-items-center h-100" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title text-uppercase">User Active</h5>
+                                <p class="card-text text-center font-weight-bold">{{$userCountActive}}</p>
+                                <a href="{{ route('admin.customer.list') }}" class="btn btn-primary text-uppercase">user list</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card align-items-center h-100" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title text-uppercase">User InActive</h5>
+                                <p class="card-text text-center font-weight-bold">{{$userCountInActive}}</p>
+                                <a href="{{ route('admin.customer.list') }}" class="btn btn-primary text-uppercase">user list</a>
                             </div>
                         </div>
                     </div>
