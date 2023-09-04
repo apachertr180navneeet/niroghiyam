@@ -41,7 +41,8 @@ class MembershipController extends Controller
         if(Auth::check()){
             $user_data = auth()->user();
 
-            $memebership_mode = Membership::get();
+            $memebership_mode = Membership_mode::get();
+
             
             return view('admin.memebership.memebership_add',compact('user_data','memebership_mode'));
         }

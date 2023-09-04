@@ -73,16 +73,16 @@ class RegisterController extends ApiBaseController
         $userdetail = User_detail::create($datauserdetail);
 
         $dataLogs = [
-                'user_id' => $id,
-                'message' => $request->name.",You Have registered in Niroghya"
-            ];
+            'user_id' => $id,
+            'message' => $request->name.",You Have registered in Niroghya"
+        ];
 
-            $notification = Logs::create($dataLogs);
+        $notification = Logs::create($dataLogs);
 
-            $notificationData['user_id'] = $notification->user_id;
-            $notificationData['message'] = $notification->message; 
+        $notificationData['user_id'] = $notification->user_id;
+        $notificationData['message'] = $notification->message; 
 
-            return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token, 'Notification' => $notificationData], 200);
+        return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token, 'Notification' => $notificationData], 200);
     }
 
 
@@ -95,7 +95,7 @@ class RegisterController extends ApiBaseController
         if($username == ""){
             return response()->json(['error' => 'Username Required !'], 422);
         }else{
-            $useremail =  User::where('email', $username)->first();
+            $useremail=User::where('email', $username)->first();
             if($useremail){
 
                 $length = 32; // Length of the token in bytes
@@ -109,11 +109,18 @@ class RegisterController extends ApiBaseController
                 $user = User::where('email', $username)
                 ->update(['otp' => $otp,'remember_token' => $token]);
 
-                 // Save OTP to Firebase Realtime Database or Firestore
-                $database = Firebase::database();
-                $database->getReference('otps')->child($useremail->phone_number)->set($otp);
+                $dataLogs = [
+                    'user_id' => $useremail->id,
+                    'message' => $useremail->name.",You have login in Niroghya"
+                ];
+        
+                $notification = Logs::create($dataLogs);
+        
+                $notificationData['user_id'] = $notification->user_id;
+                $notificationData['message'] = $notification->message;
+                
    
-                 return $this->sendResponse($success, 'User login successfully.');
+                 return $this->sendResponse($success,$notificationData, 'User login successfully.');
             }else{
 
                 $usermobile =  User::where('phone_number', $username)->first();
@@ -131,10 +138,18 @@ class RegisterController extends ApiBaseController
                     $user =User::where('phone_number', $username)
                     ->update(['otp' => $success['otp'],'remember_token' => $token]);
 
-                    $database = Firebase::database();
-                $database->getReference('otps')->child($username)->set($otp);
+                    $dataLogs = [
+                        'user_id' => $useremail->id,
+                        'message' => $useremail->name.",You have login in Niroghya"
+                    ];
+            
+                    $notification = Logs::create($dataLogs);
+            
+                    $notificationData['user_id'] = $notification->user_id;
+                    $notificationData['message'] = $notification->message;
+                    
    
-                 return $this->sendResponse($success, 'User login successfully.');
+                 return $this->sendResponse($success,$notificationData, 'User login successfully.');
                 }else{
 
                     return response()->json(['error' => 'Invalid credentials'], 401);   
