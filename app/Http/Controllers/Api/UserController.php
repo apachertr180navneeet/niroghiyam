@@ -256,8 +256,27 @@ class UserController extends ApiBaseController
             ];
             return $this->sendResponse($success, 'Membeship Detail');
         }else{
-            return response()->json(['error' => 'User Membership Already Taken'], 401);
+            return response()->json(['error' => 'Please purchase membership'], 401);
         }
 
     }
+    public function getuserkyc(Request $request){
+            
+        $userid = $request->id;
+
+        $user_kyc = User_kyc::where('user_id', $userid)->first()->toArray();
+        $user_detail = User::where('id', $userid)->first()->toArray();
+
+
+        
+
+        $success['kyc_detail'] = [
+            'kyc_front_image' => $user_kyc['kyc_front_image'],
+            'kyc_back_image' => $user_kyc['kyc_back_image'],
+            'kyc_detail' => $user_kyc['kyc_detail'],
+            'userkyc_status' => $user_detail['userkyc']
+        ];
+        
+        return $this->sendResponse($success, 'User detail Get');
+}
 }

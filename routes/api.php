@@ -50,6 +50,7 @@ Route::controller(UserController::class)->group(function(){
     Route::post('profile_update', 'profileupdate');
     Route::post('user_membership', 'usermembership');
     Route::post('get_user_membership', 'getusermembership');
+    Route::post('get_user_kyc', 'getuserkyc');
 });
 
 
@@ -64,6 +65,7 @@ Route::controller(CommonController::class)->group(function(){
     Route::post('about_us', 'about_us');
     Route::post('return_policy', 'return_policy');
     Route::post('privacy_policy', 'privacy_policy');
+    Route::post('banner_list', 'banner_list');
 });
 
 

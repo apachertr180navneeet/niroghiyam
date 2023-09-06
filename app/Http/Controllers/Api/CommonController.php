@@ -15,7 +15,8 @@ use App\Models\{
     Blood_Group,
     Allergy,
     Category,
-    CMS
+    CMS,
+    Banner
 };
 
 
@@ -33,7 +34,8 @@ use App\Http\Resources\{
     BloodGroupResource,
     AllergyResources,
     CategoryResource,
-    CmsResource
+    CmsResource,
+    BannerResources
 };
 use Illuminate\Http\JsonResponse;
 
@@ -160,6 +162,21 @@ class CommonController extends ApiBaseController
 
         if(count($category_list) != 0){
             return $this->sendResponse(CmsResource::collection($category_list), 'Return Policy retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+
+    public function banner_list(Request $request){
+
+        $userid = $request->userid;
+            
+        $banner_list = Banner::where('user_id',$userid)->get();
+
+
+        if(count($banner_list) != 0){
+            return $this->sendResponse(BannerResources::collection($banner_list), 'Banner retrieved successfully.');
         }else{
             return $this->sendError('No record Found');
         }
