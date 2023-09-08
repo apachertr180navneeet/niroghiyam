@@ -66,6 +66,7 @@ Route::controller(CommonController::class)->group(function(){
     Route::post('return_policy', 'return_policy');
     Route::post('privacy_policy', 'privacy_policy');
     Route::post('banner_list', 'banner_list');
+    Route::post('notification_list', 'notification_list');
 });
 
 

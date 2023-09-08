@@ -16,7 +16,8 @@ use App\Models\{
     Allergy,
     Category,
     CMS,
-    Banner
+    Banner,
+    Logs
 };
 
 
@@ -35,7 +36,8 @@ use App\Http\Resources\{
     AllergyResources,
     CategoryResource,
     CmsResource,
-    BannerResources
+    BannerResources,
+    NotificationResources
 };
 use Illuminate\Http\JsonResponse;
 
@@ -177,6 +179,21 @@ class CommonController extends ApiBaseController
 
         if(count($banner_list) != 0){
             return $this->sendResponse(BannerResources::collection($banner_list), 'Banner retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+
+    public function notification_list(Request $request){
+
+        $userid = $request->userid;
+            
+        $logs_list = Logs::where('user_id',$userid)->get();
+
+
+        if(count($logs_list) != 0){
+            return $this->sendResponse(NotificationResources::collection($logs_list), 'Notification retrieved successfully.');
         }else{
             return $this->sendError('No record Found');
         }
