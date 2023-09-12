@@ -17,7 +17,8 @@ use App\Models\{
     Category,
     CMS,
     Banner,
-    Logs
+    Logs,
+    VacinationCart
 };
 
 
@@ -37,7 +38,8 @@ use App\Http\Resources\{
     CategoryResource,
     CmsResource,
     BannerResources,
-    NotificationResources
+    NotificationResources,
+    VaccinationCartResource
 };
 use Illuminate\Http\JsonResponse;
 
@@ -194,6 +196,20 @@ class CommonController extends ApiBaseController
 
         if(count($logs_list) != 0){
             return $this->sendResponse(NotificationResources::collection($logs_list), 'Notification retrieved successfully.');
+        }else{
+            return $this->sendError('No record Found');
+        }
+    }
+
+    public function vacination_cart(Request $request){
+
+        $cartid = $request->cartid;
+            
+        $vcaination_cart = VacinationCart::where('vacicnation_parente',$cartid)->get();
+
+
+        if(count($vcaination_cart) != 0){
+            return $this->sendResponse(VaccinationCartResource::collection($vcaination_cart), 'Notification retrieved successfully.');
         }else{
             return $this->sendError('No record Found');
         }

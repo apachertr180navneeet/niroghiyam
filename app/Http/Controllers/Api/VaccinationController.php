@@ -41,6 +41,8 @@ class VaccinationController extends ApiBaseController
                 'name' => 'required',
                 'vaccination_next_schedule' => 'required',
                 'place' => 'required',
+                'age' => 'required',
+                'vaccination_type' => 'required'
             ]);
 
 
@@ -50,6 +52,8 @@ class VaccinationController extends ApiBaseController
             $vaccination_next_schedule = $request->vaccination_next_schedule;
             $place = $request->place;
             $remark = $request->remark;
+            $age = $request->age;
+            $vaccination_type = $request->vaccination_type;
 
 
 
@@ -60,7 +64,9 @@ class VaccinationController extends ApiBaseController
                 'name' => $name,
                 'vaccination_next_schedule' => $vaccination_next_schedule,
                 'place' => $place,
-                'remark' => $remark
+                'remark' => $remark,
+                'age' => $age,
+                'vaccination_type' => $vaccination_type
 
            ];
     

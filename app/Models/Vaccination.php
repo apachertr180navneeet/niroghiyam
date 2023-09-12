@@ -25,6 +25,8 @@ class Vaccination extends Authenticatable
         'vaccination_next_schedule',
         'place',
         'remark',
+        'age',
+        'vaccination_type',
         'status',
         'type'
     ];

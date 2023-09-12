@@ -263,13 +263,8 @@ class UserController extends ApiBaseController
     public function getuserkyc(Request $request){
             
         $userid = $request->id;
-
-        $user_kyc = User_kyc::where('user_id', $userid)->first()->toArray();
-        $user_detail = User::where('id', $userid)->first()->toArray();
-
-
-        
-
+        $user_kyc = User_kyc::where('user_id', $userid)->first();
+        $user_detail = User::where('id', $userid)->first();
         $success['kyc_detail'] = [
             'kyc_front_image' => $user_kyc['kyc_front_image'],
             'kyc_back_image' => $user_kyc['kyc_back_image'],

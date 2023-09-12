@@ -67,6 +67,7 @@ Route::controller(CommonController::class)->group(function(){
     Route::post('privacy_policy', 'privacy_policy');
     Route::post('banner_list', 'banner_list');
     Route::post('notification_list', 'notification_list');
+    Route::post('vacination_cart', 'vacination_cart');
 });
 
 
