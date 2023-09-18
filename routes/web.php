@@ -101,6 +101,8 @@ Route::name('admin.')->prefix('admin')->controller(DashboardController::class)->
     Route::get('dashboard', 'dashboard')->name('dashboard');
 
     Route::get('setting', 'setting')->name('setting');
+    
+    Route::post('setting_edit', 'edit')->name('setting.edit');
 
     Route::get('logout', 'logout')->name('logout');
 

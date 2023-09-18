@@ -37,16 +37,25 @@
                         </div> -->
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form" action="{{ route('admin.setting') }}" method="post" id="coustomer_Edit" enctype="multipart/form-data">
+                        <form role="form" action="{{ route('admin.setting.edit') }}" method="post" id="coustomer_Edit" enctype="multipart/form-data">
                         @csrf
+                            <input type="hidden" name="id" value="{{ $settingdata->id }}" >
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="name">Title</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="{{ $settingdata->title }}" placeholder="Enter Name" />
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="{{ $settingdata->title }}" placeholder="Enter title" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Vedio File</label>
-                                    <input type="file" class="form-control" id="file" name="file" value="" placeholder="Uplload File" />
+                                    <label for="link">App Link</label>
+                                    <input type="text" class="form-control" id="link" name="app_link" value="{{ $settingdata->app_link }}" placeholder="Enter link" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="vedio">Vedio File</label>
+                                    <input type="file" class="form-control" id="vedio" name="vedio" value="{{ $settingdata->vedio }}" placeholder="Uplload vedio" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="app_logo">App Logo File</label>
+                                    <input type="file" class="form-control" id="app_logo" name="app_logo" value="{{ $settingdata->app_link }}" placeholder="Uplload App Logo" />
                                 </div>
                                 <div class="card-footer">
                                   <button type="submit" class="btn btn-primary">Save</button>
