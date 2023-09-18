@@ -178,21 +178,26 @@ class RegisterController extends ApiBaseController
         if(!empty($user)){
             $success['name'] =  $user->name;
             $success['user_id'] =  $user->id;
-            $user_detail = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $user->id)->first()->toArray();
+            $user_detail = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $user->id)->first();
 
+            if(!empty($user_detail['allergy'])){
+                $allergy = explode(",",$user_detail['allergy']);
 
-            $allergy = explode(",",$user_detail['allergy']);
-
-            foreach ($allergy as $value) {
-                $allergy_list = Allergy::select('id','name')->where('id', $value)->get();
-                foreach ($allergy_list as $id => $title) {
-                    $success['UserAllergy'][] = $title->name;
-                    $List = implode(',', $success['UserAllergy']);
+                foreach ($allergy as $value) {
+                    $allergy_list = Allergy::select('id','name')->where('id', $value)->get();
+                    foreach ($allergy_list as $id => $title) {
+                        $success['UserAllergy'][] = $title->name;
+                        $List = implode(',', $success['UserAllergy']);
+                    }
                 }
+            }else{
+                $List = "";
             }
 
 
-            $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first()->toArray();
+
+            $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first();
+            
 
             
 
@@ -211,6 +216,18 @@ class RegisterController extends ApiBaseController
                 $vecination = 'No';
             }
 
+            if(!empty($bloodgroup_list)){
+                $UserBloodGroup=$bloodgroup_list['name'];
+            }else{
+                $UserBloodGroup="";
+            }
+
+            if(!empty($bloodgroup_list)){
+                $profile_image=$user_detail['profile_image'];
+            }else{
+                $profile_image="";
+            }
+
             $success['porsnal_detail'] = [
                 'UserId' => $user_detail['id'],
                 'UserFullName' => $user_detail['name'],
@@ -218,17 +235,17 @@ class RegisterController extends ApiBaseController
                 'UserPhoneNumber' => $user_detail['phone_number'],
                 'UserDob' => $user_detail['date_of_birth'],
                 'UserGender' => $gender,
-                'UserBloodGroup' => $bloodgroup_list['name'],
+                'UserBloodGroup'=>$UserBloodGroup,
                 'Uservecination' => $vecination,
                 'UserAllergy' => $List,
-                'UserImage' => $user_detail['profile_image'],
+                'UserImage' => $profile_image,
             ];
 
 
 
             $success['residental_detail'] = [
                 'address' => $user_detail['address'],
-                'UserImage' => $user_detail['profile_image'],
+                'UserImage' => $profile_image,
                 'city' => $user_detail['city'],
                 'state' => $user_detail['state'],
                 'country' => $user_detail['country'],
@@ -236,10 +253,10 @@ class RegisterController extends ApiBaseController
 
 
             $success['medical_info'] = [
-                'UserBloodGroup' => $bloodgroup_list['name'],
+                'UserBloodGroup' => $UserBloodGroup,
                 'Uservecination' => $vecination,
                 'UserAllergy' => $List,
-                'UserImage' => $user_detail['profile_image'],
+                'UserImage' => $profile_image,
             ];
             return $this->sendResponse($success, 'Otp Matched');
         }else{

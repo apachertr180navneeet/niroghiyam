@@ -1,6 +1,7 @@
 @extends('admin.layout.main_app')
 @section('title', 'Customer Detail')
 @section('content')
+
             <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->

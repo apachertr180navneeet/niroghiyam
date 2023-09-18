@@ -118,7 +118,7 @@ class UserController extends Controller
         if(Auth::check()){
             $user_data = auth()->user();
 
-            $user_detail = User::where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->join('user_kyc', 'users.id', '=', 'user_kyc.user_id')->first();
+            $user_detail = User::where('id', $id)->join('user_detail', 'users.id', '=', 'user_detail.user_id')->first();
 
             return view('admin.customer.customer_detail',compact('user_data','user_detail'));
         }
