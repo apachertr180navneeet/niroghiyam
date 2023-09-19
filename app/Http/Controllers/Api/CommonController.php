@@ -18,7 +18,8 @@ use App\Models\{
     CMS,
     Banner,
     Logs,
-    VacinationCart
+    VacinationCart,
+    Setting
 };
 
 
@@ -39,7 +40,8 @@ use App\Http\Resources\{
     CmsResource,
     BannerResources,
     NotificationResources,
-    VaccinationCartResource
+    VaccinationCartResource,
+    SettingResource
 };
 use Illuminate\Http\JsonResponse;
 
@@ -174,9 +176,9 @@ class CommonController extends ApiBaseController
 
     public function banner_list(Request $request){
 
-        $userid = $request->userid;
+        $userid = '1';
             
-        $banner_list = Banner::where('user_id',$userid)->get();
+        $banner_list = Banner::where('status',$userid)->get();
 
 
         if(count($banner_list) != 0){
@@ -213,5 +215,13 @@ class CommonController extends ApiBaseController
         }else{
             return $this->sendError('No record Found');
         }
+    }
+
+    public function setting(Request $request){
+
+            
+        $setting = Setting::where('id',1)->get();
+        return $this->sendResponse(SettingResource::collection($setting), 'Setting retrieved successfully.');
+        
     }
 }

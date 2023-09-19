@@ -33,7 +33,7 @@ class BannerController extends Controller
             $user_data = auth()->user();
             
 
-            $banner_list = Banner::select('banner.banner_id','banner.user_id','banner.banner_titel','banner.banner_image','banner.status','users.name')->join('users', 'banner.user_id', '=', 'users.id')->paginate(10);
+            $banner_list = Banner::select('banner.banner_id','banner.banner_titel','banner.banner_image','banner.status')->paginate(10);
             
             return view('admin.banner.banner_list',compact('user_data','banner_list'))->with('i', (request()->input('page', 1) - 1) * 1);
         }
@@ -57,7 +57,6 @@ class BannerController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
-            'user' => 'required'
         ]);
 
         $baseUrl = url('/');
@@ -79,7 +78,6 @@ class BannerController extends Controller
 
         $datauser = [
              'banner_titel' => $request->name,
-             'user_id' => $request->user,
              'banner_image' => $imageupload
         ];
         

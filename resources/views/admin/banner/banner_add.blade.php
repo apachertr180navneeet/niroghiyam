@@ -47,14 +47,14 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label>User</label>
                                     <select class="form-control" name="user">
                                         @foreach ($user_list as $userlist)
                                         <option value="{{ $userlist->id }}">{{ $userlist->name }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
                                 <div class="form-group mb-3">
                                     <label for="caticon" class="form-label">Banner Image</label>
                                     <input class="form-control" type="file" name="image" id="image">

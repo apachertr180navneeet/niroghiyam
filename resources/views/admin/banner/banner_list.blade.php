@@ -53,7 +53,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.no.</th>
-                                                    <th>User Name</th>
+                                                    {{-- <th>User Name</th> --}}
                                                     <th>Title</th>
                                                     <th>Image</th>
                                                     <th>Status</th>
@@ -64,7 +64,7 @@
                                                 @foreach ($banner_list as $banner)
                                                 <tr>
                                                     <td>{{ ++$i }}.</td>
-                                                    <td>{{ $banner->name }}</td>
+                                                    {{-- <td>{{ $banner->name }}</td> --}}
                                                     <td>{{ $banner->banner_titel }}</td>
                                                     <td><img src="{{ $banner->banner_image }}" class="tableimg" alt=""></td>
                                                     <td>

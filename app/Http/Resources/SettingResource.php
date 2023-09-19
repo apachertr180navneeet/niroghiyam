@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
   
-class BannerResources extends JsonResource
+class SettingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,11 @@ class BannerResources extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'banner_id  ' => $this->banner_id,
-            'banner_titel' => $this->banner_titel,
-            'banner_image' => $this->banner_image,
-            'status' => $this->status
+            'id' => $this->id,
+            'title' => $this->title,
+            'vedio' => $this->vedio,
+            'app_link' => $this->app_link,
+            'app_logo' => $this->app_logo
         ];
     }
 }
