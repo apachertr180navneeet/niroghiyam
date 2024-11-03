@@ -53,7 +53,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.no.</th>
-                                                    <th>name</th>
+                                                    <th>Name</th>
+                                                    <th>Membership Mode</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -63,28 +64,26 @@
                                                 <tr>
                                                     <td>{{ ++$i }}.</td>
                                                     <td>{{ $memebership->name }}</td>
+                                                    <td>{{ $memebership->membershipmodename }}</td>
                                                     <td>
-                                                        @if($memebership->status =='0')
-                                                            <a href="javascript:void(0)" data-id="{{ $memebership->id }}" data-status="1" data-url="{{ route('admin.membership.status',$memebership->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @if($memebership->status =='1')
+                                                            <p>Active</p>
                                                         @else
-                                                            <a href="javascript:void(0)" data-id="{{ $memebership->id }}" data-status="0" data-url="{{ route('admin.membership.status',$memebership->id) }}" class="btn btn-success status">Active</a>
+                                                            <p>InActive</p>
                                                         @endif
                                                     </td>
                                                     <td>
                                                         <a href="javascript:void(0)" id="delete-user" data-id="{{ $memebership->id }}" data-url="{{ route('admin.membership.delete',$memebership->id) }}"  class="btn btn-danger delete">Delete</a>
                                                         <a href="{{ route('admin.membership.edit',$memebership->id) }}" class="btn btn-warning">Edit</a>
+                                                        @if($memebership->status =='0')
+                                                            <a href="javascript:void(0)" data-id="{{ $memebership->id }}" data-status="1" data-url="{{ route('admin.membership.status',$memebership->id) }}" class="btn btn-success status">Active</a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-id="{{ $memebership->id }}" data-status="0" data-url="{{ route('admin.membership.status',$memebership->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>S.no.</th>
-                                                    <th>name</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
 
                                         <div class="d-flex justify-content-center">

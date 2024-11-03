@@ -17,5 +17,6 @@ class Membership extends Model
         'description',
         'amount',
         'status',
+        'membership_mode',
     ];
 }

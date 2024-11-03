@@ -64,27 +64,24 @@
                                                     <td>{{ ++$i }}.</td>
                                                     <td>{{ $blood_group->name }}</td>
                                                     <td>
-                                                        @if($blood_group->status =='0')
-                                                            <a href="javascript:void(0)" data-id="{{ $blood_group->id }}" data-status="1" data-url="{{ route('admin.blood_group.status',$blood_group->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @if($blood_group->status =='1')
+                                                            <p>Active</p>
                                                         @else
-                                                            <a href="javascript:void(0)" data-id="{{ $blood_group->id }}" data-status="0" data-url="{{ route('admin.blood_group.status',$blood_group->id) }}" class="btn btn-success status">Active</a>
+                                                            <p>InActive</p>
                                                         @endif
                                                     </td>
                                                     <td>
                                                         <a href="javascript:void(0)" id="delete-user" data-id="{{ $blood_group->id }}" data-url="{{ route('admin.blood_group.delete',$blood_group->id) }}"  class="btn btn-danger delete">Delete</a>
                                                         <a href="{{ route('admin.blood_group.edit',$blood_group->id) }}" class="btn btn-warning">Edit</a>
+                                                        @if($blood_group->status =='0')
+                                                            <a href="javascript:void(0)" data-id="{{ $blood_group->id }}" data-status="1" data-url="{{ route('admin.blood_group.status',$blood_group->id) }}" class="btn btn-success status">Active</a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-id="{{ $blood_group->id }}" data-status="0" data-url="{{ route('admin.blood_group.status',$blood_group->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>S.no.</th>
-                                                    <th>name</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
 
                                         <div class="d-flex justify-content-center">

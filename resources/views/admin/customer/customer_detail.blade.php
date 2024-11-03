@@ -1,6 +1,7 @@
 @extends('admin.layout.main_app')
 @section('title', 'Customer Detail')
 @section('content')
+
             <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -39,29 +40,31 @@
                         <!-- form start -->
                         <form role="form">
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label for="name">Customer Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Enter email" value="<?= $user_detail->name ?>" readonly />
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone_number">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone_number" placeholder="Enter email" value="<?= $user_detail->phone_number ?>" readonly />
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="text" class="form-control" id="email" placeholder="Enter email" value="<?= $user_detail->email ?>" readonly />
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" placeholder="Enter email" value="<?= $user_detail->address ?>" readonly />
-                                </div>
-                                <div class="form-group">
-                                    <label for="city">City</label>
-                                    <input type="text" class="form-control" id="city" placeholder="Enter email" value="<?= $user_detail->city ?>" readonly />
-                                </div>
-                                <div class="form-group">
-                                    <label for="state">State</label>
-                                    <input type="text" class="form-control" id="state" placeholder="Enter email" value="<?= $user_detail->state ?>" readonly />
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label for="name">Customer Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Enter email" value="<?= $user_detail->name ?>" readonly />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="phone_number">Phone Number</label>
+                                        <input type="text" class="form-control" id="phone_number" placeholder="Enter email" value="<?= $user_detail->phone_number ?>" readonly />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control" id="email" placeholder="Enter email" value="<?= $user_detail->email ?>" readonly />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control" id="address" placeholder="Enter email" value="<?= $user_detail->address ?>" readonly />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="city" placeholder="Enter email" value="<?= $user_detail->city ?>" readonly />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="state">State</label>
+                                        <input type="text" class="form-control" id="state" placeholder="Enter email" value="<?= $user_detail->state ?>" readonly />
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -71,6 +74,37 @@
                 </div>
                 <!--/.col (left) -->
             </div>
+
+            {{--  <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <!-- <div class="card-header">
+                            <h3 class="card-title">Customer Membership</h3>
+                        </div> -->
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form role="form">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label for="name">Customer Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Enter email" value="<?= $user_detail->name ?>" readonly />
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="phone_number">Phone Number</label>
+                                        <input type="text" class="form-control" id="phone_number" placeholder="Enter email" value="<?= $user_detail->phone_number ?>" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>  --}}
         </div>
     </section>
 </div>

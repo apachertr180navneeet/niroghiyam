@@ -53,7 +53,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>S.no.</th>
-                                                    <th>name</th>
+                                                    <th>Name</th>
+                                                    <th>Image</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -63,28 +64,26 @@
                                                 <tr>
                                                     <td>{{ ++$i }}.</td>
                                                     <td>{{ $category->name }}</td>
+                                                    <td><img src="{{ $category->image }}" class="tableimg" alt=""></td>
                                                     <td>
-                                                        @if($category->status =='0')
-                                                            <a href="javascript:void(0)" data-id="{{ $category->id }}" data-status="1" data-url="{{ route('admin.category.status',$category->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @if($category->status =='1')
+                                                            <p>Active</p>
                                                         @else
-                                                            <a href="javascript:void(0)" data-id="{{ $category->id }}" data-status="0" data-url="{{ route('admin.category.status',$category->id) }}" class="btn btn-success status">Active</a>
+                                                            <p>InActive</p>
                                                         @endif
                                                     </td>
                                                     <td>
                                                         <a href="javascript:void(0)" id="delete-user" data-id="{{ $category->id }}" data-url="{{ route('admin.category.delete',$category->id) }}"  class="btn btn-danger delete">Delete</a>
                                                         <a href="{{ route('admin.category.edit',$category->id) }}" class="btn btn-warning">Edit</a>
+                                                        @if($category->status =='0')
+                                                            <a href="javascript:void(0)" data-id="{{ $category->id }}" data-status="1" data-url="{{ route('admin.category.status',$category->id) }}" class="btn btn-success status">Active</a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-id="{{ $category->id }}" data-status="0" data-url="{{ route('admin.category.status',$category->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>S.no.</th>
-                                                    <th>name</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
 
                                         <div class="d-flex justify-content-center">

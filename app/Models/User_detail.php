@@ -25,13 +25,16 @@ class user_detail extends Authenticatable
         'address',
         'pincode',
         'city',
+        'country',
         'state',
+        'membership_id',
         'memebership_start_date',
         'memebership_end_date',
         'gender',
         'blood_group',
         'allergy',
         'vecination',
-        'date_of_birth'
+        'date_of_birth',
+        'addiction'
     ];
 }

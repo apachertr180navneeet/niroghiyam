@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\{
     User,
-    Membership
+    Membership,
+    Membership_mode
 };
 
 
@@ -25,7 +26,7 @@ class MembershipController extends Controller
         if(Auth::check()){
             $user_data = auth()->user();
 
-            $memebership_list = Membership::paginate(10);
+            $memebership_list = Membership::select('memberships.id','memberships.name','memberships.description','memberships.amount','memberships.status','membership_mode.name As membershipmodename')->join('membership_mode', 'memberships.membership_mode', '=', 'membership_mode.id')->paginate(10);
             
             return view('admin.memebership.memebership_list',compact('user_data','memebership_list'))->with('i', (request()->input('page', 1) - 1) * 1);
         }
@@ -39,8 +40,11 @@ class MembershipController extends Controller
     public function create(){
         if(Auth::check()){
             $user_data = auth()->user();
+
+            $memebership_mode = Membership_mode::get();
+
             
-            return view('admin.memebership.memebership_add',compact('user_data'));
+            return view('admin.memebership.memebership_add',compact('user_data','memebership_mode'));
         }
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
@@ -51,7 +55,7 @@ class MembershipController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
             'description' => 'required',
         ]);
 
@@ -61,6 +65,7 @@ class MembershipController extends Controller
              'name' => $request->name,
              'description' => $request->description,
              'amount' => $request->price,
+             'membership_mode' => $request->membership_mode,
         ];
 
         $id = Membership::insertGetId($datauser);
@@ -87,7 +92,7 @@ class MembershipController extends Controller
     public function update(Request $request){
         $validatedData = $request->validate([
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric',
             'description' => 'required',
         ]);
 

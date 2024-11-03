@@ -1,8 +1,5 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-
-
 use App\Http\Controllers\Admin\{
     LoginController,
     DashboardController,
@@ -11,9 +8,16 @@ use App\Http\Controllers\Admin\{
     BloodGroupController,
     CategoryController,
     MembershipController,
-    CMSController
+    CMSController,
+    ComplainsController,
+    VaccinationController,
+    TransictionListController,
+    LogsController,
+    BannerController,
+    DownloadReportController,
+    WebController,
+    AddictionController
 };
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,25 +31,32 @@ use App\Http\Controllers\Admin\{
 
 
 
-// Admin URL
 
+
+Route::controller(WebController::class)->group(function () {
+    Route::get('term_and_condition', 'term_and_condition')->name('term_and_condition');
+    Route::get('about', 'about')->name('about');
+    Route::get('privacy_policy', 'privacy_policy')->name('privacy_policy');
+    Route::get('delete_user_account', 'delete_user_account')->name('delete_user_account');
+    Route::post('delete_user', 'delete_user')->name('delete_user');
+});
+Route::name('download.')->controller(DownloadReportController::class)->group(function () {
+    Route::get('report/{id}', 'index')->name('report');
+    Route::post('otpcheck', 'otpcheck')->name('otpcheck');
+});
+// Admin URL
 Route::name('admin.')->prefix('admin')->controller(LoginController::class)->group(function () {
     Route::get('login', 'index')->name('login');
-    Route::post('custom-login','customLogin')->name('login.custom');
-    Route::get('forgotpassword','forgotpassword')->name('forget.password');
-    Route::post('forgotpasswordpost','forgotpasswordpost')->name('forget.password.post');
+    Route::post('custom-login', 'customLogin')->name('login.custom');
+    Route::get('forgotpassword', 'forgotpassword')->name('forget.password');
+    Route::post('forgotpasswordpost', 'forgotpasswordpost')->name('forget.password.post');
 });
-
-
-
 Route::name('admin.')->prefix('admin')->controller(DashboardController::class)->middleware('web')->group(function () {
     Route::get('dashboard', 'dashboard')->name('dashboard');
+    Route::get('setting', 'setting')->name('setting');
+    Route::post('setting_edit', 'edit')->name('setting.edit');
     Route::get('logout', 'logout')->name('logout');
 });
-
-
-
-
 Route::name('admin.')->prefix('admin')->controller(UserController::class)->middleware('web')->group(function () {
     Route::get('customer_list', 'index')->name('customer.list');
     Route::get('customer_add', 'create')->name('customer.add');
@@ -55,10 +66,17 @@ Route::name('admin.')->prefix('admin')->controller(UserController::class)->middl
     Route::post('customer_update', 'update')->name('customer.update');
     Route::delete('customer_delete/{id}', 'delete')->name('customer.delete');
     Route::get('customer_status/{id}', 'status')->name('customer.status');
+    Route::get('customer_doc/{id}', 'document')->name('customer.doc');
 });
-
-
-
+Route::name('admin.')->prefix('admin')->controller(AddictionController::class)->middleware('web')->group(function () {
+    Route::get('addiction_list', 'index')->name('addiction.list');
+    Route::get('addiction_add', 'create')->name('addiction.add');
+    Route::post('addiction_store', 'store')->name('addiction.store');
+    Route::get('addiction_edit/{id}', 'edit')->name('addiction.edit');
+    Route::post('addiction_update', 'update')->name('addiction.update');
+    Route::delete('addiction_delete/{id}', 'delete')->name('addiction.delete');
+    Route::get('addiction_status/{id}', 'status')->name('addiction.status');
+});
 
 Route::name('admin.')->prefix('admin')->controller(AllergyController::class)->middleware('web')->group(function () {
     Route::get('allergy_list', 'index')->name('allergy.list');
@@ -69,8 +87,6 @@ Route::name('admin.')->prefix('admin')->controller(AllergyController::class)->mi
     Route::delete('allergy_delete/{id}', 'delete')->name('allergy.delete');
     Route::get('allergy_status/{id}', 'status')->name('allergy.status');
 });
-
-
 Route::name('admin.')->prefix('admin')->controller(BloodGroupController::class)->middleware('web')->group(function () {
     Route::get('blood_group_list', 'index')->name('blood_group.list');
     Route::get('blood_group_add', 'create')->name('blood_group.add');
@@ -80,8 +96,6 @@ Route::name('admin.')->prefix('admin')->controller(BloodGroupController::class)-
     Route::delete('blood_group_delete/{id}', 'delete')->name('blood_group.delete');
     Route::get('blood_group_status/{id}', 'status')->name('blood_group.status');
 });
-
-
 Route::name('admin.')->prefix('admin')->controller(CategoryController::class)->middleware('web')->group(function () {
     Route::get('category_list', 'index')->name('category.list');
     Route::get('category_add', 'create')->name('category.add');
@@ -91,9 +105,6 @@ Route::name('admin.')->prefix('admin')->controller(CategoryController::class)->m
     Route::delete('category_delete/{id}', 'delete')->name('category.delete');
     Route::get('category_status/{id}', 'status')->name('category.status');
 });
-
-
-
 Route::name('admin.')->prefix('admin')->controller(MembershipController::class)->middleware('web')->group(function () {
     Route::get('membership_list', 'index')->name('membership.list');
     Route::get('membership_add', 'create')->name('membership.add');
@@ -103,9 +114,6 @@ Route::name('admin.')->prefix('admin')->controller(MembershipController::class)-
     Route::delete('membership_delete/{id}', 'delete')->name('membership.delete');
     Route::get('membership_status/{id}', 'status')->name('membership.status');
 });
-
-
-
 Route::name('admin.')->prefix('admin')->controller(CMSController::class)->middleware('web')->group(function () {
     Route::get('cms_list', 'index')->name('cms.list');
     Route::get('cms_add', 'create')->name('cms.add');
@@ -115,6 +123,26 @@ Route::name('admin.')->prefix('admin')->controller(CMSController::class)->middle
     Route::delete('cms_delete/{id}', 'delete')->name('cms.delete');
     Route::get('cms_status/{id}', 'status')->name('cms.status');
 });
-
-
-
+Route::name('admin.')->prefix('admin')->controller(ComplainsController::class)->middleware('web')->group(function () {
+    Route::get('complains_list', 'index')->name('complains.list');
+    Route::get('complains_edit/{id}', 'edit')->name('complains.edit');
+    Route::post('complains_reply', 'reply')->name('complains.reply');
+});
+Route::name('admin.')->prefix('admin')->controller(VaccinationController::class)->middleware('web')->group(function () {
+    Route::get('vaccination_list', 'index')->name('vaccination.list');
+});
+Route::name('admin.')->prefix('admin')->controller(TransictionListController::class)->middleware('web')->group(function () {
+    Route::get('transiction_list', 'index')->name('transiction.list');
+});
+Route::name('admin.')->prefix('admin')->controller(LogsController::class)->middleware('web')->group(function () {
+    Route::get('logs', 'index')->name('logs');
+});
+Route::name('admin.')->prefix('admin')->controller(BannerController::class)->middleware('web')->group(function () {
+    Route::get('banner_list', 'index')->name('banner.list');
+    Route::get('banner_add', 'create')->name('banner.add');
+    Route::post('banner_store', 'store')->name('banner.store');
+    Route::get('banner_edit/{id}', 'edit')->name('banner.edit');
+    Route::post('banner_update', 'update')->name('banner.update');
+    Route::delete('banner_delete/{id}', 'delete')->name('banner.delete');
+    Route::get('banner_status/{id}', 'status')->name('banner.status');
+});

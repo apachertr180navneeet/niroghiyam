@@ -72,33 +72,28 @@
                                                     <td>{{ $user->city }}</td>
                                                     <td>{{ $user->state }}</td>
                                                     <td>
-                                                        @if($user->status =='0')
-                                                            <a href="javascript:void(0)" data-id="{{ $user->id }}" data-status="1" data-url="{{ route('admin.customer.status',$user->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @if($user->status =='1')
+                                                            <p>Active</p>
                                                         @else
-                                                            <a href="javascript:void(0)" data-id="{{ $user->id }}" data-status="0" data-url="{{ route('admin.customer.status',$user->id) }}" class="btn btn-success status">Active</a>
+                                                            <p>InActive</p>
                                                         @endif
                                                     </td>
                                                     <td>
                                                         <a href="{{ route('admin.customer.view',$user->id) }}" class="btn btn-primary">View</a>
                                                         <a href="{{ route('admin.customer.edit',$user->id) }}" class="btn btn-warning">Edit</a>
                                                         <a href="javascript:void(0)" id="delete-user" data-id="{{ $user->id }}" data-url="{{ route('admin.customer.delete',$user->id) }}"  class="btn btn-danger delete">Delete</a>
-                                                        <!-- <a href="" class="btn btn-success">Docs</a> -->
+                                                        @if($user->userkyc =='1')
+                                                        <a href="{{ route('admin.customer.doc',$user->id) }}" class="btn btn-success">Docs</a>
+                                                        @endif
+                                                        @if($user->status =='0')
+                                                            <a href="javascript:void(0)" data-id="{{ $user->id }}" data-status="1" data-url="{{ route('admin.customer.status',$user->id) }}" class="btn btn-success status">Active</a>
+                                                        @else
+                                                            <a href="javascript:void(0)" data-id="{{ $user->id }}" data-status="0" data-url="{{ route('admin.customer.status',$user->id) }}" class="btn btn-danger status">InActive</a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>S.no.</th>
-                                                    <th>Customer name</th>
-                                                    <th>Email</th>
-                                                    <th>Phone no.</th>
-                                                    <th>City</th>
-                                                    <th>State</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
 
                                         <div class="d-flex justify-content-center">

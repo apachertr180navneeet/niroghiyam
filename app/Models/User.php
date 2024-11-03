@@ -27,6 +27,10 @@ class User extends Authenticatable
         'type',
         'profile_image',
         'otp',
+        'userkyc',
+        'device_token',
+        'report_otp',
+        'urlslug'
     ];
 
     /**

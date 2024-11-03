@@ -19,7 +19,7 @@
         </div>
 
         <!-- SidebarSearch Form -->
-        <div class="form-inline">
+        {{-- <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
                 <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search" />
                 <div class="input-group-append">
@@ -28,7 +28,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -37,7 +37,7 @@
                     <a href="{{ route('admin.customer.list') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Customer Managment
+                            Customer
                         </p>
                     </a>
                 </li>
@@ -45,7 +45,15 @@
                     <a href="{{ route('admin.allergy.list') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Allergy Managment
+                            Allergy
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.addiction.list') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Addiction
                         </p>
                     </a>
                 </li>
@@ -53,7 +61,7 @@
                     <a href="{{ route('admin.blood_group.list') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Blood Group Managment
+                            Blood Group
                         </p>
                     </a>
                 </li>
@@ -61,7 +69,7 @@
                     <a href="{{ route('admin.category.list') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Category Managment
+                            Category
                         </p>
                     </a>
                 </li>
@@ -69,7 +77,7 @@
                     <a href="{{ route('admin.membership.list') }}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            Membership Managment
+                            Membership
                         </p>
                     </a>
                 </li>
@@ -78,6 +86,54 @@
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Content Managment System
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.complains.list') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Complains
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.vaccination.list') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Vaccination
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.transiction.list') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Payments
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.logs') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Logs
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.banner.list') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Banner
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.setting') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Setting
                         </p>
                     </a>
                 </li>

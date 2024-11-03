@@ -47,6 +47,10 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label for="caticon" class="form-label">Category Icon</label>
+                                    <input class="form-control" type="file" name="caticon" id="caticon">
+                                </div>
                                 <div class="card-footer">
                                   <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
