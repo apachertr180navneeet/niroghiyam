@@ -31,10 +31,10 @@ class BannerController extends Controller
     public function index(){
         if(Auth::check()){
             $user_data = auth()->user();
-            
+
 
             $banner_list = Banner::select('banner.banner_id','banner.banner_titel','banner.banner_image','banner.status')->paginate(10);
-            
+
             return view('admin.banner.banner_list',compact('user_data','banner_list'))->with('i', (request()->input('page', 1) - 1) * 1);
         }
 
@@ -46,7 +46,7 @@ class BannerController extends Controller
             $user_data = auth()->user();
 
             $user_list = User::where('type', '1')->get();
-            
+
             return view('admin.banner.banner_add',compact('user_data','user_list'));
         }
 
@@ -64,14 +64,14 @@ class BannerController extends Controller
 
         $file = $request->file('image');
         $filename = time().'.'.$file->getClientOriginalExtension();
-        
-        
-        
+
+
+
         // File upload location
         $location = 'uploads';
-        
+
         $imageupload = $baseUrl.'/'.$location.'/'.$filename;
-        
+
         // Upload file
         $file->move($location,$filename);
 
@@ -80,7 +80,7 @@ class BannerController extends Controller
              'banner_titel' => $request->name,
              'banner_image' => $imageupload
         ];
-        
+
 
         $id = Banner::insertGetId($datauser);
 
@@ -98,7 +98,7 @@ class BannerController extends Controller
 
 
     public function status(Request $request){
-        
+
         $id = $request->id;
         $datauser = [
              'status' => $request->status,
@@ -114,14 +114,14 @@ class BannerController extends Controller
         if(Auth::check()){
             $user_data = auth()->user();
             $category = Banner::where('banner_id', $id)->first();
-            
+
             return view('admin.banner.banner_edit',compact('user_data','category'));
         }
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
     }
-    
-    
+
+
     public function update(Request $request){
         $validatedData = $request->validate([
             'name' => 'required',
@@ -136,14 +136,14 @@ class BannerController extends Controller
         if(!empty($request->file('caticon'))){
             $file = $request->file('caticon');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            
-            
-            
+
+
+
             // File upload location
             $location = 'uploads';
-            
+
             $imageupload = $baseUrl.'/'.$location.'/'.$filename;
-            
+
             // Upload file
             $file->move($location,$filename);
 
@@ -151,14 +151,14 @@ class BannerController extends Controller
                 'banner_titel' => $request->name,
                 'banner_image' => $imageupload
            ];
-   
+
            Banner::where('banner_id', $id)->update($datauser);
 
         }else{
             $datauser = [
                 'banner_titel' => $request->name,
            ];
-   
+
            Banner::where('banner_id', $id)->update($datauser);
         }
 

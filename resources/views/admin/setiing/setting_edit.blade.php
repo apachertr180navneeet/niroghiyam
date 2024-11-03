@@ -81,7 +81,7 @@
                                     <label for="instagram">Instagram</label>
                                     <input type="text" class="form-control" id="instagram" name="instagram" value="{{ $settingdata->instagram }}" placeholder="Enter instagram" />
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="twitter">twitter</label>
                                     <input type="text" class="form-control" id="twitter" name="twitter" value="{{ $settingdata->twitter }}" placeholder="Enter twitter" />

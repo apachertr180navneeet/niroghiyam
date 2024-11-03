@@ -51,7 +51,7 @@ use Illuminate\Http\JsonResponse;
 class CommonController extends ApiBaseController
 {
     public function getmembership(){
-            
+
         $memebership_list = Membership::where('status', '1')->select('memberships.id AS membership_id','memberships.name AS membership_name','memberships.description','memberships.amount','membership_mode.name AS membership_mode_name')->join('membership_mode', 'membership_mode.id', '=', 'memberships.membership_mode')->get();
 
         if(!empty($memebership_list)){
@@ -60,24 +60,24 @@ class CommonController extends ApiBaseController
             return $this->sendError('No record Found');
         }
     }
-    
-    
+
+
     public function getbloodgroup(){
-            
+
         $bloodgroup_list = Blood_Group::where('status', '1')->get();
-    
+
         if(!empty($bloodgroup_list)){
             return $this->sendResponse(BloodGroupResource::collection($bloodgroup_list), 'Membership retrieved successfully.');
         }else{
             return $this->sendError('No record Found');
         }
     }
-    
+
     public function getallergy(){
-            
+
         $allergy_list = Allergy::where('status', '1')->get();
-    
-        
+
+
         if(!empty($allergy_list)){
             return $this->sendResponse(AllergyResources::collection($allergy_list), 'Allergy retrieved successfully.');
         }else{
@@ -86,10 +86,10 @@ class CommonController extends ApiBaseController
     }
 
     public function getaddiction(){
-            
+
         $adiction_list = Addiction::where('status', '1')->get();
-    
-        
+
+
         if(!empty($adiction_list)){
             return $this->sendResponse(AddictionResources::collection($adiction_list), 'Adiction retrieved successfully.');
         }else{
@@ -99,7 +99,7 @@ class CommonController extends ApiBaseController
 
 
     public function getcategory(){
-            
+
         $category_list = Category::where('status', '1')->get();
 
         if(!empty($category_list)){
@@ -114,7 +114,7 @@ class CommonController extends ApiBaseController
     public function categorysearch(Request $request){
 
         $name = $request->name;
-            
+
         $category_list = Category::where('name','LIKE','%'.$name.'%')->get();
 
 
@@ -129,7 +129,7 @@ class CommonController extends ApiBaseController
     public function term_and_condition(Request $request){
 
         $name = $request->name;
-            
+
         $category_list = CMS::where('page_slug','term and condition')->get();
 
 
@@ -144,7 +144,7 @@ class CommonController extends ApiBaseController
     public function contact_us(Request $request){
 
         $name = $request->name;
-            
+
         $category_list = CMS::where('page_slug','contact_us')->get();
 
 
@@ -159,7 +159,7 @@ class CommonController extends ApiBaseController
     public function about_us(Request $request){
 
         $name = $request->name;
-            
+
         $category_list = CMS::where('page_slug','about us')->get();
 
 
@@ -175,7 +175,7 @@ class CommonController extends ApiBaseController
     public function privacy_policy(Request $request){
 
         $name = $request->name;
-            
+
         $category_list = CMS::where('page_slug','privacy policy')->get();
 
 
@@ -191,7 +191,7 @@ class CommonController extends ApiBaseController
     public function return_policy(Request $request){
 
         $name = $request->name;
-            
+
         $category_list = CMS::where('page_slug','return policy')->get();
 
 
@@ -206,7 +206,7 @@ class CommonController extends ApiBaseController
     public function banner_list(Request $request){
 
         $userid = '1';
-            
+
         $banner_list = Banner::where('status',$userid)->get();
 
 
@@ -221,7 +221,7 @@ class CommonController extends ApiBaseController
     public function notification_list(Request $request){
 
         $userid = $request->userid;
-            
+
         $logs_list = Logs::where('user_id',$userid)->get();
 
 
@@ -235,7 +235,7 @@ class CommonController extends ApiBaseController
     public function vacination_cart(Request $request){
 
         $cartid = $request->cartid;
-            
+
         $vcaination_cart = VacinationCart::where('vacicnation_parente','!=',0)->get();
 
 
@@ -248,9 +248,9 @@ class CommonController extends ApiBaseController
 
     public function setting(Request $request){
 
-            
+
         $setting = Setting::where('id',1)->get();
         return $this->sendResponse(SettingResource::collection($setting), 'Setting retrieved successfully.');
-        
+
     }
 }

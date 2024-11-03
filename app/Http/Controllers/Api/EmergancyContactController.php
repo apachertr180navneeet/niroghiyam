@@ -60,9 +60,9 @@ class EmergancyContactController extends ApiBaseController
     public function emergancycontactlist(Request $request){
 
         $userid = $request->userid;
-            
+
         $emergancy_list = Emergancy_Contact::where('userid', $userid)->get();
-    
+
         if(count($emergancy_list) != 0){
             return $this->sendResponse(EmergancyContactResource::collection($emergancy_list), 'Emergancy Contact retrieved successfully.');
         }else{
@@ -73,10 +73,10 @@ class EmergancyContactController extends ApiBaseController
     public function emergancycontactdelete(Request $request){
 
         $id = $request->id;
-            
+
         $deleted = Emergancy_Contact::where('emergancy_contact_id', $id)->delete();
 
-    
+
         if($deleted == 1){
             $success['message'] = 'record deleted';
             return $this->sendResponse($success, 'Emergancy Contact Deleted successfully.');
@@ -126,8 +126,8 @@ class EmergancyContactController extends ApiBaseController
        $record = Emergancy_Contact::where('emergancy_contact_id', $id);
        $record->update($datauser);
 
-        
-        
+
+
         return $this->sendResponse($record, 'Emergancy Contact Update');
     }
 }

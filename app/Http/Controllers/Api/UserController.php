@@ -35,7 +35,7 @@ use Carbon\Carbon;
 class UserController extends ApiBaseController
 {
     public function getuser(Request $request){
-            
+
             $userid = $request->id;
 
             $user_detail = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $userid)->first()->toArray();
@@ -72,7 +72,7 @@ class UserController extends ApiBaseController
                 $bloodgroup_list['name'] = "";
             }
 
-            
+
 
             if($user_detail['gender'] == '1'){
                 $gender = 'Male';
@@ -122,22 +122,21 @@ class UserController extends ApiBaseController
             ];
 
             //$success['alerylist'] = $alerylist;
-            
+
             return $this->sendResponse($success, 'User detail Get');
     }
     public function profileupdate(Request $request){
 
-        
         $userid = $request->id;
 
         $baseUrl = url('/');
-        
+
         if($request->file('profile_image') != ""){
             $file = $request->file('profile_image');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            
 
-            
+
+
             // File upload location
             $location = 'uploads';
 
@@ -152,13 +151,13 @@ class UserController extends ApiBaseController
                 'phone_number' => $request->phone_number,
                 'profile_image' => $imageupload,
             ];
-    
-    
+
+
             User::where('id', $userid)->update($userdata);
         }
 
 
-        
+
 
         $userdata = [
             'name' => $request->name,
@@ -172,13 +171,13 @@ class UserController extends ApiBaseController
                 'name' => $request->allergy_text,
                 'status' => '1'
            ];
-   
+
            $id = Allergy::insertGetId($datauser);
         }
 
         User::where('id', $userid)->update($userdata);
 
-        
+
             $userdetaildata = [
                 'address' => $request->address,
                 'city' => $request->city,
@@ -191,13 +190,13 @@ class UserController extends ApiBaseController
                 'addiction' => $request->addiction,
             ];
 
-    
-    
+
+
             User_detail::where('user_id', $userid)->update($userdetaildata);
 
             $success['user_detail'] = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $userid)->first();
 
-            
+
             return $this->sendResponse($success, 'User detail updated');
     }
     public function usermembership(Request $request){
@@ -205,9 +204,9 @@ class UserController extends ApiBaseController
             'user_id' => 'required',
             'package_id' => 'required',
         ]);
-        
+
         $checkuser =  User::where('id', $request->user_id)->first();
-        
+
         if(!empty($checkuser)){
             $checkUsermembership =  User_membership::where('user_id', $request->user_id)->first();
 
@@ -220,7 +219,7 @@ class UserController extends ApiBaseController
             $currentDateTime = Carbon::now();
 
             $start_date = $currentDateTime->format('Y-m-d H:i:s');
-            
+
             if($membership_detail->membership_mode_name == "Monthly"){
                 $end_date = $currentDateTime->addMonth()->format('Y-m-d H:i:s');
             }elseif($membership_detail->membership_mode_name == "Quarter"){
@@ -254,12 +253,12 @@ class UserController extends ApiBaseController
                ];
 
                User_membership::where('user_package_id', $checkUsermembership->user_package_id)->update($datamembership);
-            
-                   
+
+
                    return response()->json(['message' => 'User Membership Updated successful'], 200);
                 }else{
                     return response()->json(['error' => 'Same Membership Already Taken'], 401);
-                }                    
+                }
             }else{
                 $datamembership = [
                     'user_id' => $request->user_id,
@@ -269,7 +268,7 @@ class UserController extends ApiBaseController
                     'start_date' => $start_date,
                     'end_date' => $end_date,
                ];
-        
+
                $usermembership = User_membership::create($datamembership);
 
                return response()->json(['message' => 'User Membership Taken successful'], 200);
@@ -298,7 +297,7 @@ class UserController extends ApiBaseController
 
     }
     public function getuserkyc(Request $request){
-            
+
         $userid = $request->id;
         $user_kyc = User_kyc::where('user_id', $userid)->first();
         if(empty($user_kyc)){
@@ -311,7 +310,7 @@ class UserController extends ApiBaseController
             'kyc_detail' => $user_kyc['kyc_detail'] ?? '',
             'userkyc_status' => $user_detail['userkyc']?? ''
         ];
-        
+
         return $this->sendResponse($success, 'User detail Get');
 }
 }

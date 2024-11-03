@@ -31,11 +31,11 @@ use URL;
 class HomeController extends ApiBaseController
 {
     public function home_screen(Request $request){
-            
+
             $userid = $request->userid;
 
             $user_detail = User::join('user_detail', 'user_detail.user_id', '=', 'users.id')->where('id', $userid)->first();
-            
+
             $List = "";
             $allergy = explode(",",$user_detail['allergy']);
 
@@ -70,7 +70,7 @@ class HomeController extends ApiBaseController
             ];
 
             //$success['alerylist'] = $alerylist;
-            
+
             return $this->sendResponse($success, 'Home Screen Data');
     }
 
@@ -79,7 +79,7 @@ class HomeController extends ApiBaseController
         $success['setiing_data'] = [
             'Vedio' => ($setting['vedio'] !="") ? ($setting['vedio']) : (""),
         ];
-        
+
         return $this->sendResponse($success, 'Setting Data');
     }
 }

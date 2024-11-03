@@ -37,7 +37,7 @@ class UserController extends Controller
             $user_data = auth()->user();
 
             $user_list = User::where('type', '1')->select('users.id','users.status','users.userkyc','users.name','users.email','users.phone_number','user_detail.city','user_detail.state')->join('user_detail', 'users.id', '=', 'user_detail.user_id')->paginate(10);
-            
+
             return view('admin.customer.customer_list',compact('user_data','user_list'))->with('i', (request()->input('page', 1) - 1) * 1);
         }
 
@@ -54,7 +54,7 @@ class UserController extends Controller
             $allergy_list = Allergy::where('status', '1')->get();
 
             $bg_list = Blood_Group::where('status', '1')->get();
-            
+
             return view('admin.customer.customer_add',compact('user_data','bg_list','allergy_list'));
         }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'phone_number' => 'required|numeric',
+            'phone_number' => 'required|numeric|min:0|max:10',
             'address' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -125,7 +125,7 @@ class UserController extends Controller
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
     }
-       
+
     public function edit($id){
         if(Auth::check()){
             $user_data = auth()->user();
@@ -133,13 +133,13 @@ class UserController extends Controller
             $allergy_list = Allergy::where('status', '1')->get();
 
             $bg_list = Blood_Group::where('status', '1')->get();
-            
+
             return view('admin.customer.customer_edit',compact('user_data','user','bg_list','allergy_list'));
         }
 
         return redirect("admin/login")->withSuccess('You are not allowed to access');
     }
-        
+
     public function update(Request $request){
         $validatedData = $request->validate([
             'name' => 'required',
@@ -193,15 +193,15 @@ class UserController extends Controller
         $deleted = User::where('id', $id)->delete();
         return response()->json(['success'=>'User Deleted Successfully!']);
     }
-    
+
     public function status(Request $request){
-        
+
         $id = $request->id;
         $datauser = [
              'status' => $request->status,
         ];
 
-        
+
         User::where('id', $id)->update($datauser);
 
 
@@ -233,7 +233,7 @@ class UserController extends Controller
             }else{
                 $user_report = "";
             }
-            
+
 
             return view('admin.customer.customer_doc_report',compact('user_data','user_detail','user_report'));
         }

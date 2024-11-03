@@ -54,7 +54,7 @@ class RegisterController extends ApiBaseController
         ]);
 
                 $otp = random_int(100000, 999999);
-                $reportotp = random_int(1000, 9999); 
+                $reportotp = random_int(1000, 9999);
                 // $url = "http://msg.icloudsms.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=e90dedc2d77274aee9dc1144e489811&message=Dear%20Member%2C%20use." . $otp . "%20as%20OTP%20to%20verify%20your%20mobile%20number.&senderId=CSHBRO&routeId=1&mobileNos=" . $request->phone_number . "&smsContentType=english";
 
                 // $curl = curl_init();
@@ -80,10 +80,10 @@ class RegisterController extends ApiBaseController
                 $foo = preg_replace('/\s+/', ' ', $userslug);
                 // Replace non-alphanumeric characters with hyphens
                 $slug = preg_replace('/[^a-z0-9]+/', '-', $foo);
-                
+
                 // Remove leading and trailing hyphens
                 $slug = trim($slug, '-');
-                
+
                 // Replace multiple consecutive hyphens with a single hyphen
                 $slug = preg_replace('/-+/', '-', $slug);
         $datauser = [
@@ -98,7 +98,7 @@ class RegisterController extends ApiBaseController
 
         ];
 
-        
+
         $user = User::create($datauser);
         $id = $user->id;
         $token =  $user->createToken('MyApp')->plainTextToken;
@@ -122,7 +122,7 @@ class RegisterController extends ApiBaseController
         $notification = Logs::create($dataLogs);
 
         $notificationData['user_id'] = $notification->user_id;
-        $notificationData['message'] = $notification->message; 
+        $notificationData['message'] = $notification->message;
 
         return response()->json(['message' => 'Registration successful', 'user' => $user, 'userdetail' => $userdetail, 'token' => $token, 'Notification' => $notificationData], 200);
     }
@@ -132,7 +132,7 @@ class RegisterController extends ApiBaseController
     {
         $username = $request->username;
        $password = Hash::make($request->password);
-        
+
         if($username == ""){
             return response()->json(['error' => 'Invalid credentials'], 401);
         }else{
@@ -154,16 +154,16 @@ class RegisterController extends ApiBaseController
                     $success['free_trial'] = '1';
                 }
             }
-           
+
             if($usermobile){
                 $length = 32; // Length of the token in bytes
 
                 $randomBytes = random_bytes($length);
                 $token = $success['token'] = base64_encode($randomBytes);
-                $success['otp'] = random_int(100000, 999999); 
+                $success['otp'] = random_int(100000, 999999);
                 $success['id'] = $usermobile->id;
                 $success['userkyc'] = $usermobile->userkyc;
-        
+
                 $url = "http://msg.icloudsms.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=e90dedc2d77274aee9dc1144e489811&message=Dear%20Member%2C%20use." . $success['otp'] . "%20as%20OTP%20to%20verify%20your%20mobile%20number.&senderId=CSHBRO&routeId=1&mobileNos=" . $usermobile->phone_number . "&smsContentType=english";
 
                 $curl = curl_init();
@@ -185,7 +185,7 @@ class RegisterController extends ApiBaseController
                 $response = curl_exec($curl);
 
                 curl_close($curl);
-                
+
 
                 $user = User::where('email', $username)->orwhere('phone_number', $username)
                 ->update(['otp' => $success['otp'],'remember_token' => $token]);
@@ -194,16 +194,47 @@ class RegisterController extends ApiBaseController
                     'user_id' => $usermobile->id,
                     'message' => $usermobile->name.",You have login in Niroghyam"
                 ];
-        
+
                 $notification = Logs::create($dataLogs);
-        
+
                 $notificationData['user_id'] = $notification->user_id;
                 $notificationData['message'] = $notification->message;
-                
+
 
                 return $this->sendResponse($success,$notificationData, 'User login successfully.');
             }else{
-                return response()->json(['error' => 'Invalid credentials'], 401);   
+
+                $usermobile =  User::where('phone_number', $username)->first();
+
+                if($usermobile){
+                    $length = 32; // Length of the token in bytes
+
+                    $randomBytes = random_bytes($length);
+                    $token = $success['token'] = base64_encode($randomBytes);
+                    $otp = $success['otp'] = random_int(100000, 999999);
+                    $success['id'] = $usermobile->id;
+                    $success['userkyc'] = $usermobile->userkyc;
+
+
+                    $user =User::where('phone_number', $username)
+                    ->update(['otp' => $success['otp'],'remember_token' => $token]);
+
+                    $dataLogs = [
+                        'user_id' => $useremail->id,
+                        'message' => $useremail->name.",You have login in Niroghya"
+                    ];
+
+                    $notification = Logs::create($dataLogs);
+
+                    $notificationData['user_id'] = $notification->user_id;
+                    $notificationData['message'] = $notification->message;
+
+
+                 return $this->sendResponse($success,$notificationData, 'User login successfully.');
+                }else{
+
+                    return response()->json(['error' => 'Invalid credentials'], 401);
+                }
             }
         }
     }
@@ -222,7 +253,7 @@ class RegisterController extends ApiBaseController
         $user = User::where('id', $request->userid)->where('remember_token',$request->token)->where('otp',$request->otp)->first();
 
 
-        
+
 
 
         if(!empty($user)){
@@ -247,9 +278,9 @@ class RegisterController extends ApiBaseController
 
 
             $bloodgroup_list = Blood_Group::where('id', $user_detail['blood_group'])->first();
-            
 
-            
+
+
 
             if($user_detail['gender'] == '1'){
                 $gender = 'Male';
@@ -313,7 +344,7 @@ class RegisterController extends ApiBaseController
             $success['name'] =  "";
             return $this->sendResponse($success, 'Otp Not Matched');
         }
-         
+
 
         return response()->json(['error' => 'Invalid credentials'], 401);
     }
@@ -334,7 +365,7 @@ class RegisterController extends ApiBaseController
 
             User::where('email', $request->email)
                 ->update(['otp' => $otp]);
-   
+
             return $this->sendResponse($success, 'Resend Otp.');
 
         }elseif($request->mobile != ""){
@@ -381,9 +412,9 @@ class RegisterController extends ApiBaseController
                     if(!empty($request->file('front_image'))){
                         $front_image = $request->file('front_image');
                         $front_imagename = time().'front_image.'.$front_image->getClientOriginalExtension();
-    
+
                         $front_images = $baseUrl.'/'.$location.'/'.$front_imagename;
-    
+
                         // Upload file
                         $front_image->move($location,$front_imagename);
                         $datauser['kyc_front_image'] = $front_images;
@@ -395,10 +426,10 @@ class RegisterController extends ApiBaseController
                         $back_image = $request->file('back_image');
 
                         $back_imagename = time().'back_image.'.$back_image->getClientOriginalExtension();
-    
+
                         $back_images = $baseUrl.'/'.$location.'/'.$back_imagename;
-                        
-    
+
+
                         // Upload file
                         $back_image->move($location,$back_imagename);
 
@@ -408,18 +439,18 @@ class RegisterController extends ApiBaseController
 
 
 
-                    
-                
+
+
 
                     $user =User_kyc::where('user_id', $request->user_id)
                         ->update($datauser);
 
                         $success['user_id'] = $usertoken->id;
                         $success['user_name'] = $usertoken->name;
-    
+
                         $user =User::where('id', $request->user_id)
                             ->update(['userkyc' => '1']);
-    
+
                         return $this->sendResponse($success, 'User kyc Updated');
                 }else{
                     $baseUrl = url('/');
@@ -429,13 +460,13 @@ class RegisterController extends ApiBaseController
                     ];
                     // File upload location
                     $location = 'uploads';
-                    
+
                     if(!empty($request->file('front_image'))){
                         $front_image = $request->file('front_image');
                         $front_imagename = time().'front_image.'.$front_image->getClientOriginalExtension();
-    
+
                         $front_images = $baseUrl.'/'.$location.'/'.$front_imagename;
-    
+
                         // Upload file
                         $front_image->move($location,$front_imagename);
                         $datauser['kyc_front_image'] = $front_images;
@@ -447,10 +478,10 @@ class RegisterController extends ApiBaseController
                         $back_image = $request->file('back_image');
 
                         $back_imagename = time().'back_image.'.$back_image->getClientOriginalExtension();
-    
+
                         $back_images = $baseUrl.'/'.$location.'/'.$back_imagename;
-                        
-    
+
+
                         // Upload file
                         $back_image->move($location,$back_imagename);
 
@@ -460,7 +491,7 @@ class RegisterController extends ApiBaseController
 
 
 
-                
+
                     $user = User_kyc::create($datauser);
 
                     $success['user_id'] = $usertoken->id;
@@ -473,19 +504,19 @@ class RegisterController extends ApiBaseController
                 }
 
             }else{
-                $success['user'] = "User Not Found"; 
+                $success['user'] = "User Not Found";
                 return $this->sendResponse($success, 'User Not Found');
             }
-            
+
         }else{
-            $success['user'] = "Pls Add correct token"; 
+            $success['user'] = "Pls Add correct token";
             return $this->sendResponse($success, 'Token Dosn,t mactched');
         }
     }
 
 
     public function forgotPassword(Request $request){
-    
+
         $username = $request->username;
         $user = User::where('email',$username)->first();
         if(empty($user)){
@@ -506,7 +537,7 @@ class RegisterController extends ApiBaseController
 
 
     public function changePassword(Request $request){
-    
+
         $id = $request->id;
         $code = $request->code;
         $password = $request->password;
@@ -516,39 +547,39 @@ class RegisterController extends ApiBaseController
             $success['user'] = $user = User::where('otp',$code)->first();
 
         }
-        
+
         if(!empty($user)){
             $userdata = [
                 'password' => Hash::make($request->password),
                 'otp' => "",
             ];
-    
-    
+
+
             User::where('id', $user->id)->update($userdata);
-    
+
             return $this->sendResponse($success, 'password Changed');
         }else{
             return response()->json(['error' => 'User Not Found'], 200);
         }
-        
+
     }
 
 
     public function EmergencyMssage(Request $request){
-    
+
         //$emergency_mobile_number = $request->emergency_mobile_number;
         $userid = $request->userid;
         $user = User::where('id',$userid)->first();
         $records = DB::table('emergancy_contact')->where('userid', $userid)->get();
         foreach ($records as $key => $value) {
-            
+
             $emergency_mobile_number = $value->emergancy_contact_mobile;
             $single = $user->report_otp .'Link:-https://niroghyam.com/public/report/'.$user->urlslug;
             //$url = "http://msg.icloudsms.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=e90dedc2d77274aee9dc1144e489811&message=Your%20loved%20one%20is%20in%20trouble.%20person%20will%20contact%20you.%20Give%20this%20otp%20".$user->report_otp.".%20Link%20is%20%3Chttps%3A%2F%2Fniroghyam.com%2Fpublic%2Freport%2F".$user->urlslug."%3E&senderId=CSHBRO&routeId=1&mobileNos=".$emergency_mobile_number."&smsContentType=english";
             //$url = "http://msg.icloudsms.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=e90dedc2d77274aee9dc1144e489811&message=Dear%20Member%2C%20use." . $single . "%20as%20OTP%20to%20verify%20your%20mobile%20number.&senderId=CSHBRO&routeId=1&mobileNos=" . $emergency_mobile_number . "&smsContentType=english";
            // $url = "http://msg.icloudsms.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=e90dedc2d77274aee9dc1144e489811&message=Dear%20Member%2C%20use." . $single . "%20as%20OTP%20to%20verify%20your%20mobile%20number.&senderId=CSHBRO&routeId=1&mobileNos=7821810600&smsContentType=english";
             $curl = curl_init();
-        
+
             curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
@@ -562,15 +593,15 @@ class RegisterController extends ApiBaseController
                 'Cache-Control: no-cache'
             ),
             ));
-            
+
             $response = curl_exec($curl);
         //print_r($response);
             curl_close($curl);
         }
 
-        
-        
-        $success['response'] = '1';        
+
+
+        $success['response'] = '1';
 
         return $this->sendResponse($success, 'message send');
     }

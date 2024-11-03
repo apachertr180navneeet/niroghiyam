@@ -33,12 +33,13 @@ use URL;
 class VaccinationController extends ApiBaseController
 {
     public function vaccinationadd(Request $request){
-            
+
 
             $request->validate([
                 'user_id' => 'required',
                 'vaccination_date' => 'required',
                 'name' => 'required',
+                'vaccination_next_schedule' => 'required',
                 'place' => 'required',
                 'age' => 'required',
                 'vaccination_type' => 'required'
@@ -68,20 +69,20 @@ class VaccinationController extends ApiBaseController
                 'vaccination_type' => $vaccination_type
 
            ];
-    
+
            $success = Vaccination::create($datauser);
 
-            
-            
+
+
             return $this->sendResponse($success, 'Vaccination Created');
     }
 
     public function vaccination_list(Request $request){
 
         $userid = $request->userid;
-            
+
         $vaccination_list = Vaccination::where('user_id', $userid)->get();
-    
+
         if(count($vaccination_list) != 0){
             return $this->sendResponse(VaccinationResource::collection($vaccination_list), 'Vaccination retrieved successfully.');
         }else{
@@ -93,7 +94,7 @@ class VaccinationController extends ApiBaseController
 
         $userid = $request->userid;
         $useryear = $request->year;
-            
+
         $vaccination_list_year = Vaccination::where('user_id', $userid)->where('created_at', 'LIKE', "%$useryear%")->get();
         if(count($vaccination_list_year) != 0){
             return $this->sendResponse(VaccinationResource::collection($vaccination_list_year), 'Vaccination retrieved successfully.');
@@ -161,8 +162,8 @@ class VaccinationController extends ApiBaseController
        $record = Vaccination::find($id);
        $record->update($datauser);
 
-        
-        
+
+
         return $this->sendResponse($record, 'Vaccination Update');
     }
 }
